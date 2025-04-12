@@ -1,15 +1,16 @@
 import React, { useState } from 'react';
 import { 
-  FaUser,
-  FaSchool,
-  FaMapMarkerAlt,
-  FaBook,
-  FaCalendarAlt,
+  FaUser, 
+  FaSchool, 
+ 
+  FaChalkboardTeacher,
+  
+  FaExchangeAlt,
+  
   FaPhone,
-  FaEnvelope,
-  FaPaperclip,
-  FaArrowLeft
+  FaInfoCircle
 } from 'react-icons/fa';
+import { IoMdClose } from 'react-icons/io';
 
 const TransferRequestForm = ({ onCloseForm }) => {
   const [formData, setFormData] = useState({
@@ -17,34 +18,23 @@ const TransferRequestForm = ({ onCloseForm }) => {
     currentSchool: '',
     currentDistrict: '',
     currentCity: '',
-    subject: '',
+    subjects: [],
+    position: '',
+    qualifications: [],
+    grades: [],
     preferredDistrict: '',
     preferredCity: '',
-    reason: '',
+    preferredReason: '',
     phone: '',
-    email: '',
-    attachment: null
+    additionalContact: '',
+    status: 'pending'
   });
 
-  const [errors, setErrors] = useState({});
-  const [isSubmitting, setIsSubmitting] = useState(false);
-  const [submitSuccess, setSubmitSuccess] = useState(false);
+  const [currentSubject, setCurrentSubject] = useState('');
+  const [currentQualification, setCurrentQualification] = useState('');
+  const [currentGrade, setCurrentGrade] = useState('');
 
-  const districts = [
-    'Colombo', 'Gampaha', 'Kalutara', 'Kandy', 'Matale', 'Nuwara Eliya',
-    'Galle', 'Matara', 'Hambantota', 'Jaffna', 'Kilinochchi', 'Mannar',
-    'Mullaitivu', 'Vavuniya', 'Puttalam', 'Kurunegala', 'Anuradhapura',
-    'Polonnaruwa', 'Badulla', 'Monaragala', 'Ratnapura', 'Kegalle'
-  ];
-
-  const subjects = [
-    'Mathematics', 'Science', 'English', 'Sinhala', 'Tamil',
-    'History', 'Buddhism', 'Christianity', 'Islam', 'Geography',
-    'Commerce', 'Accounting', 'Art', 'Music', 'Dancing',
-    'IT', 'Agriculture', 'Health Science', 'Sinhala Literature'
-  ];
-
-  const handleChange = (e) => {
+  const handleInputChange = (e) => {
     const { name, value } = e.target;
     setFormData(prev => ({
       ...prev,
@@ -52,343 +42,385 @@ const TransferRequestForm = ({ onCloseForm }) => {
     }));
   };
 
-  const handleFileChange = (e) => {
+  const handleArrayAdd = (field, currentValue, setCurrentValue) => {
+    if (currentValue.trim() === '') return;
+    
     setFormData(prev => ({
       ...prev,
-      attachment: e.target.files[0]
+      [field]: [...prev[field], currentValue]
     }));
+    
+    setCurrentValue('');
   };
 
-  const validateForm = () => {
-    const newErrors = {};
-    
-    if (!formData.name.trim()) newErrors.name = 'Name is required';
-    if (!formData.currentSchool.trim()) newErrors.currentSchool = 'Current school is required';
-    if (!formData.currentDistrict) newErrors.currentDistrict = 'District is required';
-    if (!formData.subject) newErrors.subject = 'Subject is required';
-    if (!formData.preferredDistrict) newErrors.preferredDistrict = 'Preferred district is required';
-    if (!formData.reason.trim()) newErrors.reason = 'Reason for transfer is required';
-    if (!formData.phone.trim()) newErrors.phone = 'Phone number is required';
-    if (!formData.email.trim()) {
-      newErrors.email = 'Email is required';
-    } else if (!/^\S+@\S+\.\S+$/.test(formData.email)) {
-      newErrors.email = 'Email is invalid';
-    }
-    
-    setErrors(newErrors);
-    return Object.keys(newErrors).length === 0;
+  const handleRemoveItem = (field, index) => {
+    setFormData(prev => ({
+      ...prev,
+      [field]: prev[field].filter((_, i) => i !== index)
+    }));
   };
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    
-    if (validateForm()) {
-      setIsSubmitting(true);
-      
-      // Simulate API call
-      setTimeout(() => {
-        console.log('Form submitted:', formData);
-        setIsSubmitting(false);
-        setSubmitSuccess(true);
-        
-        // Reset form after 3 seconds
-        setTimeout(() => {
-          setSubmitSuccess(false);
-          setFormData({
-            name: '',
-            currentSchool: '',
-            currentDistrict: '',
-            currentCity: '',
-            subject: '',
-            preferredDistrict: '',
-            preferredCity: '',
-            reason: '',
-            phone: '',
-            email: '',
-            attachment: null
-          });
-        }, 3000);
-      }, 1500);
-    }
+    // Here you would typically send the data to your backend
+    console.log('Form submitted:', formData);
+    // After submission, you might want to close the form
+    onCloseForm();
   };
 
-  if (submitSuccess) {
-    return (
-      <div className="bg-white rounded-xl shadow-md p-8 max-w-2xl mx-auto">
-        <div className="text-center">
-          <div className="w-16 h-16 bg-green-100 rounded-full flex items-center justify-center mx-auto mb-4">
-            <svg className="w-8 h-8 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M5 13l4 4L19 7"></path>
-            </svg>
-          </div>
-          <h3 className="text-2xl font-bold text-gray-800 mb-2">Request Submitted Successfully!</h3>
-          <p className="text-gray-600 mb-6">Your transfer request has been received. We'll notify you when we find potential matches.</p>
-          <button
-            onClick={onCloseForm}
-            className="px-6 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition"
-          >
-            Back to Requests
-          </button>
-        </div>
-      </div>
-    );
-  }
-
   return (
-    <div className="bg-white rounded-xl shadow-md p-6 max-w-4xl mx-auto">
-      <div className="flex items-center mb-6">
-        <button 
-          onClick={onCloseForm}
-          className="mr-4 text-gray-500 hover:text-gray-700"
-        >
-          <FaArrowLeft size={20} />
-        </button>
-        <h2 className="text-2xl font-bold text-gray-800">Create Transfer Request</h2>
-      </div>
-      
-      <form onSubmit={handleSubmit}>
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8">
-          {/* Personal Information */}
-          <div className="space-y-4">
-            <h3 className="text-lg font-semibold text-gray-700 flex items-center">
-              <FaUser className="mr-2 text-blue-500" />
-              Personal Information
-            </h3>
-            
-            <div>
-              <label className="block text-sm font-medium text-gray-700 mb-1">Full Name *</label>
-              <div className="relative">
-                <input
-                  type="text"
-                  name="name"
-                  value={formData.name}
-                  onChange={handleChange}
-                  className={`w-full pl-10 pr-4 py-2 border ${errors.name ? 'border-red-500' : 'border-gray-300'} rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500`}
-                  placeholder="Your full name"
-                />
-                <FaUser className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400" />
-              </div>
-              {errors.name && <p className="mt-1 text-sm text-red-600">{errors.name}</p>}
-            </div>
-            
-            <div>
-              <label className="block text-sm font-medium text-gray-700 mb-1">Phone Number *</label>
-              <div className="relative">
-                <input
-                  type="tel"
-                  name="phone"
-                  value={formData.phone}
-                  onChange={handleChange}
-                  className={`w-full pl-10 pr-4 py-2 border ${errors.phone ? 'border-red-500' : 'border-gray-300'} rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500`}
-                  placeholder="07X XXX XXXX"
-                />
-                <FaPhone className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400" />
-              </div>
-              {errors.phone && <p className="mt-1 text-sm text-red-600">{errors.phone}</p>}
-            </div>
-            
-            <div>
-              <label className="block text-sm font-medium text-gray-700 mb-1">Email *</label>
-              <div className="relative">
-                <input
-                  type="email"
-                  name="email"
-                  value={formData.email}
-                  onChange={handleChange}
-                  className={`w-full pl-10 pr-4 py-2 border ${errors.email ? 'border-red-500' : 'border-gray-300'} rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500`}
-                  placeholder="your@email.com"
-                />
-                <FaEnvelope className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400" />
-              </div>
-              {errors.email && <p className="mt-1 text-sm text-red-600">{errors.email}</p>}
-            </div>
+    <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center p-4 z-50">
+      <div className="bg-white rounded-xl shadow-xl max-w-2xl w-full max-h-[90vh] overflow-y-auto">
+        <div className="p-6">
+          <div className="flex justify-between items-start mb-6">
+            <h2 className="text-2xl font-bold text-gray-800">Create Transfer Request</h2>
+            <button 
+              onClick={onCloseForm}
+              className="text-gray-500 hover:text-gray-700"
+            >
+              <IoMdClose size={24} />
+            </button>
           </div>
-          
-          {/* Current Position */}
-          <div className="space-y-4">
-            <h3 className="text-lg font-semibold text-gray-700 flex items-center">
-              <FaSchool className="mr-2 text-blue-500" />
-              Current Position
-            </h3>
-            
-            <div>
-              <label className="block text-sm font-medium text-gray-700 mb-1">School Name *</label>
-              <div className="relative">
-                <input
-                  type="text"
-                  name="currentSchool"
-                  value={formData.currentSchool}
-                  onChange={handleChange}
-                  className={`w-full pl-10 pr-4 py-2 border ${errors.currentSchool ? 'border-red-500' : 'border-gray-300'} rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500`}
-                  placeholder="Current school name"
-                />
-                <FaSchool className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400" />
-              </div>
-              {errors.currentSchool && <p className="mt-1 text-sm text-red-600">{errors.currentSchool}</p>}
-            </div>
-            
-            <div>
-              <label className="block text-sm font-medium text-gray-700 mb-1">District *</label>
-              <div className="relative">
-                <select
-                  name="currentDistrict"
-                  value={formData.currentDistrict}
-                  onChange={handleChange}
-                  className={`w-full pl-10 pr-4 py-2 border ${errors.currentDistrict ? 'border-red-500' : 'border-gray-300'} rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 appearance-none`}
-                >
-                  <option value="">Select District</option>
-                  {districts.map(district => (
-                    <option key={district} value={district}>{district}</option>
-                  ))}
-                </select>
-                <FaMapMarkerAlt className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400" />
-              </div>
-              {errors.currentDistrict && <p className="mt-1 text-sm text-red-600">{errors.currentDistrict}</p>}
-            </div>
-            
-            <div>
-              <label className="block text-sm font-medium text-gray-700 mb-1">City/Town</label>
-              <div className="relative">
-                <input
-                  type="text"
-                  name="currentCity"
-                  value={formData.currentCity}
-                  onChange={handleChange}
-                  className="w-full pl-10 pr-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
-                  placeholder="Current city/town"
-                />
-                <FaMapMarkerAlt className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400" />
-              </div>
-            </div>
-            
-            <div>
-              <label className="block text-sm font-medium text-gray-700 mb-1">Subject *</label>
-              <div className="relative">
-                <select
-                  name="subject"
-                  value={formData.subject}
-                  onChange={handleChange}
-                  className={`w-full pl-10 pr-4 py-2 border ${errors.subject ? 'border-red-500' : 'border-gray-300'} rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 appearance-none`}
-                >
-                  <option value="">Select Subject</option>
-                  {subjects.map(subject => (
-                    <option key={subject} value={subject}>{subject}</option>
-                  ))}
-                </select>
-                <FaBook className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400" />
-              </div>
-              {errors.subject && <p className="mt-1 text-sm text-red-600">{errors.subject}</p>}
-            </div>
-          </div>
-          
-          {/* Preferred Transfer */}
-          <div className="space-y-4">
-            <h3 className="text-lg font-semibold text-gray-700 flex items-center">
-              <FaMapMarkerAlt className="mr-2 text-blue-500" />
-              Preferred Transfer Location
-            </h3>
-            
-            <div>
-              <label className="block text-sm font-medium text-gray-700 mb-1">District *</label>
-              <div className="relative">
-                <select
-                  name="preferredDistrict"
-                  value={formData.preferredDistrict}
-                  onChange={handleChange}
-                  className={`w-full pl-10 pr-4 py-2 border ${errors.preferredDistrict ? 'border-red-500' : 'border-gray-300'} rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 appearance-none`}
-                >
-                  <option value="">Select Preferred District</option>
-                  {districts.map(district => (
-                    <option key={district} value={district}>{district}</option>
-                  ))}
-                </select>
-                <FaMapMarkerAlt className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400" />
-              </div>
-              {errors.preferredDistrict && <p className="mt-1 text-sm text-red-600">{errors.preferredDistrict}</p>}
-            </div>
-            
-            <div>
-              <label className="block text-sm font-medium text-gray-700 mb-1">City/Town (Optional)</label>
-              <div className="relative">
-                <input
-                  type="text"
-                  name="preferredCity"
-                  value={formData.preferredCity}
-                  onChange={handleChange}
-                  className="w-full pl-10 pr-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
-                  placeholder="Preferred city/town"
-                />
-                <FaMapMarkerAlt className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400" />
-              </div>
-            </div>
-          </div>
-          
-          {/* Additional Information */}
-          <div className="space-y-4">
-            <h3 className="text-lg font-semibold text-gray-700 flex items-center">
-              <FaCalendarAlt className="mr-2 text-blue-500" />
-              Additional Information
-            </h3>
-            
-            <div>
-              <label className="block text-sm font-medium text-gray-700 mb-1">Reason for Transfer *</label>
-              <textarea
-                name="reason"
-                value={formData.reason}
-                onChange={handleChange}
-                rows="4"
-                className={`w-full px-4 py-2 border ${errors.reason ? 'border-red-500' : 'border-gray-300'} rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500`}
-                placeholder="Explain your reason for requesting a transfer..."
-              ></textarea>
-              {errors.reason && <p className="mt-1 text-sm text-red-600">{errors.reason}</p>}
-            </div>
-            
-            <div>
-              <label className="block text-sm font-medium text-gray-700 mb-1">Supporting Documents</label>
-              <div className="flex items-center">
-                <label className="flex items-center px-4 py-2 bg-white border border-gray-300 rounded-lg cursor-pointer hover:bg-gray-50">
-                  <FaPaperclip className="mr-2 text-gray-500" />
-                  <span className="text-sm text-gray-700">
-                    {formData.attachment ? formData.attachment.name : 'Attach File (Optional)'}
-                  </span>
+
+          <form onSubmit={handleSubmit}>
+            {/* Personal Information */}
+            <div className="bg-gray-50 p-4 rounded-lg mb-6">
+              <h3 className="font-medium text-gray-700 mb-4 flex items-center gap-2">
+                <FaUser className="text-blue-500" />
+                Personal Information
+              </h3>
+              
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
+                <div>
+                  <label htmlFor="name" className="block text-sm font-medium text-gray-700 mb-1">
+                    Full Name
+                  </label>
                   <input
-                    type="file"
-                    onChange={handleFileChange}
-                    className="hidden"
-                    accept=".pdf,.doc,.docx,.jpg,.png"
+                    type="text"
+                    id="name"
+                    name="name"
+                    value={formData.name}
+                    onChange={handleInputChange}
+                    className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+                    required
                   />
-                </label>
+                </div>
+                
+                <div>
+                  <label htmlFor="phone" className="block text-sm font-medium text-gray-700 mb-1">
+                    Phone Number
+                  </label>
+                  <div className="flex items-center gap-2">
+                    <FaPhone className="text-gray-400" />
+                    <input
+                      type="tel"
+                      id="phone"
+                      name="phone"
+                      value={formData.phone}
+                      onChange={handleInputChange}
+                      className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+                      required
+                    />
+                  </div>
+                </div>
               </div>
-              <p className="mt-1 text-xs text-gray-500">PDF, DOC, or image files (max 5MB)</p>
+              
+              <div>
+                <label htmlFor="additionalContact" className="block text-sm font-medium text-gray-700 mb-1">
+                  Additional Contact (Optional)
+                </label>
+                <input
+                  type="text"
+                  id="additionalContact"
+                  name="additionalContact"
+                  value={formData.additionalContact}
+                  onChange={handleInputChange}
+                  className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+                />
+              </div>
             </div>
-          </div>
+
+            {/* Current School Information */}
+            <div className="bg-blue-50 p-4 rounded-lg border border-blue-100 mb-6">
+              <h3 className="font-medium text-blue-800 mb-4 flex items-center gap-2">
+                <FaSchool className="text-blue-500" />
+                Current School Information
+              </h3>
+              
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
+                <div>
+                  <label htmlFor="currentSchool" className="block text-sm font-medium text-gray-700 mb-1">
+                    School Name
+                  </label>
+                  <input
+                    type="text"
+                    id="currentSchool"
+                    name="currentSchool"
+                    value={formData.currentSchool}
+                    onChange={handleInputChange}
+                    className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+                    required
+                  />
+                </div>
+                
+                <div>
+                  <label htmlFor="position" className="block text-sm font-medium text-gray-700 mb-1">
+                    Position
+                  </label>
+                  <input
+                    type="text"
+                    id="position"
+                    name="position"
+                    value={formData.position}
+                    onChange={handleInputChange}
+                    className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+                    required
+                  />
+                </div>
+              </div>
+              
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
+                <div>
+                  <label htmlFor="currentDistrict" className="block text-sm font-medium text-gray-700 mb-1">
+                    District
+                  </label>
+                  <select
+                    id="currentDistrict"
+                    name="currentDistrict"
+                    value={formData.currentDistrict}
+                    onChange={handleInputChange}
+                    className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+                    required
+                  >
+                    <option value="">Select District</option>
+                    <option value="Colombo">Colombo</option>
+                    <option value="Gampaha">Gampaha</option>
+                    <option value="Kandy">Kandy</option>
+                    <option value="Matara">Matara</option>
+                    <option value="polonnaruwa">polonnaruwa</option>
+                  </select>
+                </div>
+                
+                <div>
+                  <label htmlFor="currentCity" className="block text-sm font-medium text-gray-700 mb-1">
+                    City
+                  </label>
+                  <input
+                    type="text"
+                    id="currentCity"
+                    name="currentCity"
+                    value={formData.currentCity}
+                    onChange={handleInputChange}
+                    className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+                    required
+                  />
+                </div>
+              </div>
+            </div>
+
+            {/* Professional Information */}
+            <div className="bg-gray-50 p-4 rounded-lg mb-6">
+              <h3 className="font-medium text-gray-700 mb-4 flex items-center gap-2">
+                <FaChalkboardTeacher className="text-blue-500" />
+                Professional Information
+              </h3>
+              
+              {/* Subjects */}
+              <div className="mb-4">
+                <label htmlFor="subjects" className="block text-sm font-medium text-gray-700 mb-1">
+                  Subjects You Teach
+                </label>
+                <div className="flex gap-2 mb-2">
+                  <input
+                    type="text"
+                    id="subjects"
+                    value={currentSubject}
+                    onChange={(e) => setCurrentSubject(e.target.value)}
+                    className="flex-1 px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+                    placeholder="e.g. Mathematics"
+                  />
+                  <button
+                    type="button"
+                    onClick={() => handleArrayAdd('subjects', currentSubject, setCurrentSubject)}
+                    className="px-3 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700"
+                  >
+                    Add
+                  </button>
+                </div>
+                <div className="flex flex-wrap gap-2">
+                  {formData.subjects.map((subject, index) => (
+                    <span key={index} className="bg-blue-100 text-blue-800 px-2 py-1 rounded-full text-sm flex items-center gap-1">
+                      {subject}
+                      <button
+                        type="button"
+                        onClick={() => handleRemoveItem('subjects', index)}
+                        className="text-blue-600 hover:text-blue-800"
+                      >
+                        <IoMdClose size={16} />
+                      </button>
+                    </span>
+                  ))}
+                </div>
+              </div>
+              
+              {/* Qualifications */}
+              <div className="mb-4">
+                <label htmlFor="qualifications" className="block text-sm font-medium text-gray-700 mb-1">
+                  Qualifications
+                </label>
+                <div className="flex gap-2 mb-2">
+                  <input
+                    type="text"
+                    id="qualifications"
+                    value={currentQualification}
+                    onChange={(e) => setCurrentQualification(e.target.value)}
+                    className="flex-1 px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+                    placeholder="e.g. B.Ed in Science"
+                  />
+                  <button
+                    type="button"
+                    onClick={() => handleArrayAdd('qualifications', currentQualification, setCurrentQualification)}
+                    className="px-3 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700"
+                  >
+                    Add
+                  </button>
+                </div>
+                <div className="flex flex-wrap gap-2">
+                  {formData.qualifications.map((qualification, index) => (
+                    <span key={index} className="bg-green-100 text-green-800 px-2 py-1 rounded-full text-sm flex items-center gap-1">
+                      {qualification}
+                      <button
+                        type="button"
+                        onClick={() => handleRemoveItem('qualifications', index)}
+                        className="text-green-600 hover:text-green-800"
+                      >
+                        <IoMdClose size={16} />
+                      </button>
+                    </span>
+                  ))}
+                </div>
+              </div>
+              
+              {/* Grades */}
+              <div className="mb-4">
+                <label htmlFor="grades" className="block text-sm font-medium text-gray-700 mb-1">
+                  Grades You Teach
+                </label>
+                <div className="flex gap-2 mb-2">
+                  <input
+                    type="text"
+                    id="grades"
+                    value={currentGrade}
+                    onChange={(e) => setCurrentGrade(e.target.value)}
+                    className="flex-1 px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+                    placeholder="e.g. Grade 10"
+                  />
+                  <button
+                    type="button"
+                    onClick={() => handleArrayAdd('grades', currentGrade, setCurrentGrade)}
+                    className="px-3 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700"
+                  >
+                    Add
+                  </button>
+                </div>
+                <div className="flex flex-wrap gap-2">
+                  {formData.grades.map((grade, index) => (
+                    <span key={index} className="bg-purple-100 text-purple-800 px-2 py-1 rounded-full text-sm flex items-center gap-1">
+                      {grade}
+                      <button
+                        type="button"
+                        onClick={() => handleRemoveItem('grades', index)}
+                        className="text-purple-600 hover:text-purple-800"
+                      >
+                        <IoMdClose size={16} />
+                      </button>
+                    </span>
+                  ))}
+                </div>
+              </div>
+            </div>
+
+            {/* Preferred Transfer Information */}
+            <div className="bg-green-50 p-4 rounded-lg border border-green-100 mb-6">
+              <h3 className="font-medium text-green-800 mb-4 flex items-center gap-2">
+                <FaExchangeAlt className="text-green-500" />
+                Preferred Transfer Information
+              </h3>
+              
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
+                <div>
+                  <label htmlFor="preferredDistrict" className="block text-sm font-medium text-gray-700 mb-1">
+                    Preferred District
+                  </label>
+                  <select
+                    id="preferredDistrict"
+                    name="preferredDistrict"
+                    value={formData.preferredDistrict}
+                    onChange={handleInputChange}
+                    className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-green-500"
+                    required
+                  >
+                    <option value="">Select District</option>
+                    <option value="Colombo">Colombo</option>
+                    <option value="Gampaha">Gampaha</option>
+                    <option value="Kandy">Kandy</option>
+                    <option value="Matara">Matara</option>
+                    <option value="polonnaruwa">polonnaruwa</option>
+                  </select>
+                </div>
+                
+                <div>
+                  <label htmlFor="preferredCity" className="block text-sm font-medium text-gray-700 mb-1">
+                    Preferred City
+                  </label>
+                  <input
+                    type="text"
+                    id="preferredCity"
+                    name="preferredCity"
+                    value={formData.preferredCity}
+                    onChange={handleInputChange}
+                    className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-green-500"
+                    required
+                  />
+                </div>
+              </div>
+              
+              <div>
+                <label htmlFor="preferredReason" className="block text-sm font-medium text-gray-700 mb-1 flex items-center gap-1">
+                  Reason for Transfer (Optional)
+                  <FaInfoCircle className="text-gray-400" title="Briefly explain your reason for requesting this transfer" />
+                </label>
+                <textarea
+                  id="preferredReason"
+                  name="preferredReason"
+                  value={formData.preferredReason}
+                  onChange={handleInputChange}
+                  rows="3"
+                  className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-green-500"
+                  placeholder="e.g. Closer to family, health reasons, etc."
+                ></textarea>
+              </div>
+            </div>
+
+            {/* Form Actions */}
+            <div className="flex justify-end gap-3">
+              <button
+                type="button"
+                onClick={onCloseForm}
+                className="px-4 py-2 border border-gray-300 text-gray-700 rounded-md hover:bg-gray-50"
+              >
+                Cancel
+              </button>
+              <button
+                type="submit"
+                className="px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700"
+              >
+                Submit Transfer Request
+              </button>
+            </div>
+          </form>
         </div>
-        
-        <div className="flex justify-end gap-4">
-          <button
-            type="button"
-            onClick={onCloseForm}
-            className="px-6 py-2 border border-gray-300 text-gray-700 rounded-lg hover:bg-gray-50"
-          >
-            Cancel
-          </button>
-          <button
-            type="submit"
-            disabled={isSubmitting}
-            className="px-6 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 disabled:bg-blue-400 flex items-center"
-          >
-            {isSubmitting ? (
-              <>
-                <svg className="animate-spin -ml-1 mr-2 h-4 w-4 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
-                  <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
-                  <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
-                </svg>
-                Submitting...
-              </>
-            ) : 'Submit Request'}
-          </button>
-        </div>
-      </form>
+      </div>
     </div>
   );
 };

@@ -61,9 +61,7 @@ const RegisterPage = () => {
               </div>
             </div>
 
-            <div className="text-center text-sm text-gray-600">
-              <p>Already have an account? <a href="#" className="font-medium text-blue-600 hover:text-blue-500">Sign in</a></p>
-            </div>
+           
           </div>
         </div>
       </div>
@@ -72,3 +70,5 @@ const RegisterPage = () => {
 };
 
 export default RegisterPage;
+
+

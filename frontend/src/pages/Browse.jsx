@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import TransferRequestForm from '../components/TeacherTransferRequests';
 import { 
   FaSearch, 
-  FaFilter, 
+
   FaCalendarAlt,
   FaSchool,
   FaChalkboardTeacher,
@@ -78,7 +78,7 @@ const transferRequests = [
     setShowDetailsModal(true);
   };
   const filteredRequests = transferRequests.filter(request => {
-    // Filter by active tab
+    
     if (activeTab !== 'all' && request.status !== activeTab) return false;
     
     // Filter by search query
