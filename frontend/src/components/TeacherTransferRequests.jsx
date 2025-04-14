@@ -64,7 +64,7 @@ const [isSubmitting, setIsSubmitting] = useState(false);
       const response = await axios.post('http://localhost:5000/api/transfer-requests', formData);
       console.log('Request created:', response.data);
       onCloseForm();
-      // Optionally show success message
+
       alert('Transfer request submitted successfully!');
     } catch (err) {
       console.error('Error creating request:', err);
@@ -87,7 +87,7 @@ const [isSubmitting, setIsSubmitting] = useState(false);
           </div>
 
           <form onSubmit={handleSubmit}>
-            {/* Personal Information */}
+          
             <div className="bg-gray-50 p-4 rounded-lg mb-6">
               <h3 className="font-medium text-gray-700 mb-4 flex items-center gap-2">
                 <FaUser className="text-blue-500" />
@@ -144,7 +144,7 @@ const [isSubmitting, setIsSubmitting] = useState(false);
               </div>
             </div>
 
-            {/* Current School Information */}
+         
             <div className="bg-blue-50 p-4 rounded-lg border border-blue-100 mb-6">
               <h3 className="font-medium text-blue-800 mb-4 flex items-center gap-2">
                 <FaSchool className="text-blue-500" />
@@ -222,14 +222,14 @@ const [isSubmitting, setIsSubmitting] = useState(false);
               </div>
             </div>
 
-            {/* Professional Information */}
+
             <div className="bg-gray-50 p-4 rounded-lg mb-6">
               <h3 className="font-medium text-gray-700 mb-4 flex items-center gap-2">
                 <FaChalkboardTeacher className="text-blue-500" />
                 Professional Information
               </h3>
               
-              {/* Subjects */}
+         
               <div className="mb-4">
                 <label htmlFor="subjects" className="block text-sm font-medium text-gray-700 mb-1">
                   Subjects You Teach
@@ -267,7 +267,7 @@ const [isSubmitting, setIsSubmitting] = useState(false);
                 </div>
               </div>
               
-              {/* Qualifications */}
+       
               <div className="mb-4">
                 <label htmlFor="qualifications" className="block text-sm font-medium text-gray-700 mb-1">
                   Qualifications
@@ -305,7 +305,7 @@ const [isSubmitting, setIsSubmitting] = useState(false);
                 </div>
               </div>
               
-              {/* Grades */}
+          
               <div className="mb-4">
                 <label htmlFor="grades" className="block text-sm font-medium text-gray-700 mb-1">
                   Grades You Teach
@@ -344,7 +344,7 @@ const [isSubmitting, setIsSubmitting] = useState(false);
               </div>
             </div>
 
-            {/* Preferred Transfer Information */}
+     
             <div className="bg-green-50 p-4 rounded-lg border border-green-100 mb-6">
               <h3 className="font-medium text-green-800 mb-4 flex items-center gap-2">
                 <FaExchangeAlt className="text-green-500" />
@@ -406,7 +406,7 @@ const [isSubmitting, setIsSubmitting] = useState(false);
               </div>
             </div>
 
-            {/* Form Actions */}
+   
             <div className="flex justify-end gap-3">
               <button
                 type="button"

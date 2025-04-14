@@ -1,7 +1,9 @@
 import React, { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 
 const Navbar = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const navigate = useNavigate();
 
   const toggleMenu = () => {
     setIsMenuOpen(!isMenuOpen);
@@ -13,30 +15,36 @@ const Navbar = () => {
         <div className="flex justify-between items-center h-16">
           {/* Logo/Brand */}
           <div className="flex-shrink-0 flex items-center">
-            <span className="text-xl font-bold text-blue-600">Teacher Transfer</span>
+            <span className="text-xl font-bold text-[#2c3e50]">Teacher Transfer</span>
           </div>
           
           {/* Desktop Navigation Links */}
           <div className="hidden md:flex space-x-8">
-            <a href="#" className="text-gray-700 hover:text-blue-600 px-3 py-2 rounded-md text-sm font-medium">
+            <button 
+              onClick={() => navigate('/browse')}
+              className="text-[#2c3e50] hover:text-[#e67e22] px-3 py-2 rounded-md text-sm font-medium"
+            >
               Browse Transfers
-            </a>
-            <a href="#" className="text-gray-700 hover:text-blue-600 px-3 py-2 rounded-md text-sm font-medium">
+            </button>
+            <button 
+              onClick={() => navigate('/how-it-works')}
+              className="text-[#2c3e50] hover:text-[#e67e22] px-3 py-2 rounded-md text-sm font-medium"
+            >
               How It Works
-            </a>
-            <a href="#" className="text-gray-700 hover:text-blue-600 px-3 py-2 rounded-md text-sm font-medium">
-              Login
-            </a>
-            <a href="#" className="bg-blue-600 text-white px-4 py-2 rounded-md text-sm font-medium hover:bg-blue-700 transition duration-300">
-              Register
-            </a>
+            </button>
+            <button 
+              onClick={() => navigate('/about')}
+              className="text-[#2c3e50] hover:text-[#e67e22] px-3 py-2 rounded-md text-sm font-medium"
+            >
+              About Us
+            </button>
           </div>
           
           {/* Mobile menu button */}
           <div className="md:hidden flex items-center">
             <button 
               onClick={toggleMenu}
-              className="text-gray-500 hover:text-gray-900 focus:outline-none"
+              className="text-[#2c3e50] hover:text-[#e67e22] focus:outline-none"
               aria-label="Toggle menu"
             >
               <svg className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -52,25 +60,41 @@ const Navbar = () => {
         </div>
       </div>
       
-      {/* Mobile menu (shown when isMenuOpen is true) */}
+      {/* Mobile menu */}
       <div className={`md:hidden ${isMenuOpen ? 'block' : 'hidden'}`}>
         <div className="px-2 pt-2 pb-3 space-y-1 sm:px-3">
-          <a href="#" className="text-gray-700 hover:text-blue-600 block px-3 py-2 rounded-md text-base font-medium">
+          <button 
+            onClick={() => {
+              navigate('/browse');
+              toggleMenu();
+            }}
+            className="text-[#2c3e50] hover:text-[#e67e22] block px-3 py-2 rounded-md text-base font-medium w-full text-left"
+          >
             Browse Transfers
-          </a>
-          <a href="#" className="text-gray-700 hover:text-blue-600 block px-3 py-2 rounded-md text-base font-medium">
+          </button>
+          <button 
+            onClick={() => {
+              navigate('/how-it-works');
+              toggleMenu();
+            }}
+            className="text-[#2c3e50] hover:text-[#e67e22] block px-3 py-2 rounded-md text-base font-medium w-full text-left"
+          >
             How It Works
-          </a>
-          <a href="#" className="text-gray-700 hover:text-blue-600 block px-3 py-2 rounded-md text-base font-medium">
-            Login
-          </a>
-          <a href="#" className="bg-blue-600 text-white block px-3 py-2 rounded-md text-base font-medium hover:bg-blue-700 transition duration-300">
-            Register
-          </a>
+          </button>
+          <button 
+            onClick={() => {
+              navigate('/about');
+              toggleMenu();
+            }}
+            className="text-[#2c3e50] hover:text-[#e67e22] block px-3 py-2 rounded-md text-base font-medium w-full text-left"
+          >
+            About Us
+          </button>
         </div>
       </div>
     </nav>
   );
 };
+
 
 export default Navbar;

@@ -3,31 +3,23 @@ import { useNavigate } from 'react-router-dom';
 import HowItsWork from '../components/HowItsWork';
 import StatsSection from '../components/Statistics';
 import Review from '../components/Review';
+
 const HeroSection = () => {
   const navigate = useNavigate();
-/*
-  const handleRegisterClick = () => {
-    navigate('/register'); 
-  }; */
+  
   const handleBrowseClick = () => {
     navigate('/browse'); 
   };
 
   return (
-    <div>
+    <div className="bg-[#F6F6F6]">
       <div className="relative h-screen bg-cover bg-center flex items-center justify-center">
-        {/* Background image with overlay */}
-        <div className="absolute inset-0 bg-[url('https://images.unsplash.com/photo-1522202176988-66273c2fd55f?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1471&q=80')] bg-cover bg-center">
+        <div className="absolute inset-0 bg-[url('https://images.unsplash.com/photo-1552664730-d307ca884978?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1470&q=80')] bg-cover bg-center">          
+          <div className="absolute inset-0 "></div>
+        </div>
         
-         
-                       </div>
-        
-        {/* Content
-        
-        
-        */}
-        <div className="relative z-10 text-center px-4 max-w-4xl mx-auto text-white">
-          <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold mb-6">
+        <div className="relative z-10 text-center px-4 max-w-4xl mx-auto text-[#0078AA]">
+          <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold mb-6 text-[#0078AA] drop-shadow-lg">
             Sri Lankan Teacher Transfer Portal
           </h1>
           <p className="text-xl md:text-2xl mb-10">
@@ -35,18 +27,10 @@ const HeroSection = () => {
           </p>
           
           <div className="flex flex-col sm:flex-row justify-center gap-4">
-          {/* 
             <button 
-              onClick={handleRegisterClick}
-              className="bg-white text-blue-800 font-bold py-3 px-8 rounded-lg hover:bg-gray-100 transition duration-300"
+              onClick={handleBrowseClick}
+              className="bg-[#FDCB6E] border-2 border-white text-[#0078AA] font-bold py-3 px-8 rounded-lg hover:bg-[#0078AA] hover:text-[#FDCB6E] hover:border-[#FDCB6E] transition duration-300 shadow-lg"
             >
-              Register Now
-            </button>
-            */}
-
-            <button 
-             onClick={handleBrowseClick}
-            className="bg-transparent border-2 border-white text-white font-bold py-3 px-8 rounded-lg hover:bg-white hover:text-blue-800 transition duration-300">
               Browse Transfers
             </button>
           </div>

@@ -28,7 +28,7 @@ const TeacherTransferRequests = () => {
   const [transferRequests, setTransferRequests] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
-  
+
 const handleCreateRequest = () => {
   setShowForm(true);
 };
@@ -56,33 +56,56 @@ useEffect(() => {
     setShowDetailsModal(true);
   };
   const filteredRequests = transferRequests.filter(request => {
-    
-    
+    // Safely access properties with fallback values
+    const name = request.name || '';
+    const subjects = Array.isArray(request.subjects) ? request.subjects : [];
+    const currentLocation = request.currentLocation || '';
+    const preferredLocation = request.preferredLocation || '';
+  
+    // Convert search query to lowercase once
+    const searchLower = searchQuery.toLowerCase();
+  
     // Filter by search query
-    if (searchQuery && 
-        !request.name.toLowerCase().includes(searchQuery.toLowerCase()) &&
-        !request.subjects.toLowerCase().includes(searchQuery.toLowerCase()) &&
-        !request.currentLocation.toLowerCase().includes(searchQuery.toLowerCase()) &&
-        !request.preferredLocation.toLowerCase().includes(searchQuery.toLowerCase())) {
+    if (searchQuery) {
+      const nameMatch = name.toLowerCase().includes(searchLower);
+      const subjectsMatch = subjects.some(subj => 
+        subj.toLowerCase().includes(searchLower)
+      );
+      const currentLocationMatch = currentLocation.toLowerCase().includes(searchLower);
+      const preferredLocationMatch = preferredLocation.toLowerCase().includes(searchLower);
+  
+      if (!nameMatch && !subjectsMatch && !currentLocationMatch && !preferredLocationMatch) {
+        return false;
+      }
+    }
+  
+    // Filter by subject
+    if (filters.subject !== 'All Subjects' && !subjects.includes(filters.subject)) {
+      return false;
+    }
+  
+    // Filter by current location
+    if (filters.currentDistrict !== 'All Districts' && 
+        !currentLocation.includes(filters.currentDistrict)) {
       return false;
     }
     
-    // Filter by subject
-    if (filters.subject !== 'All Subjects' && 
-        request.subjects !== filters.subject) return false;
-    
-    // Filter by current location
-    if (filters.currentDistrict !== 'All Districts' && 
-        !request.currentLocation.includes(filters.currentDistrict)) return false;
     if (filters.currentCity !== 'Any City' && 
-        !request.currentLocation.includes(filters.currentCity)) return false;
-    
+        !currentLocation.includes(filters.currentCity)) {
+      return false;
+    }
+  
     // Filter by preferred location
     if (filters.preferredDistrict !== 'All Districts' && 
-        !request.preferredLocation.includes(filters.preferredDistrict)) return false;
-    if (filters.preferredCity !== 'Any City' && 
-        !request.preferredLocation.includes(filters.preferredCity)) return false;
+        !preferredLocation.includes(filters.preferredDistrict)) {
+      return false;
+    }
     
+    if (filters.preferredCity !== 'Any City' && 
+        !preferredLocation.includes(filters.preferredCity)) {
+      return false;
+    }
+  
     return true;
   });
 
@@ -116,23 +139,7 @@ useEffect(() => {
     setSearchQuery('');
   };
 
-  const StatusBadge = ({ status }) => {
-    const statusColors = {
-      pending: 'bg-yellow-100 text-yellow-800',
-      completed: 'bg-green-100 text-green-800'
-    };
-    
-    const statusText = {
-      pending: 'Pending',
-      completed: 'Completed'
-    };
-    
-    return (
-      <span className={`px-2 py-1 text-xs font-semibold rounded-full ${statusColors[status]}`}>
-        {statusText[status]}
-      </span>
-    );
-  };
+ 
 
   return (
     <div className="min-h-screen bg-gray-50">
@@ -152,7 +159,7 @@ useEffect(() => {
   </div>
 )}
       <div className="container mx-auto px-4 py-8">
-        {/* Header Section */}
+     
         <div className="mb-8">
           <h1 className="text-3xl font-bold text-gray-800 mb-2">Teacher Transfer Requests</h1>
           <p className="text-gray-600">Find and connect with teachers for mutual transfers across Sri Lanka</p>
@@ -160,11 +167,11 @@ useEffect(() => {
         
      
         
-{/* Search and Filter Section */}
+
 <div className="bg-white rounded-lg shadow-sm p-5 mb-6 border border-gray-100">
-  {/* Search and Subject Row */}
+
   <div className="flex flex-col md:flex-row gap-5 mb-5">
-    {/* Search Bar - 50% width */}
+
     <div className="flex-1">
       <label htmlFor="search" className="block text-sm font-medium text-gray-700 mb-2">Search</label>
       <div className="relative">
@@ -190,7 +197,7 @@ useEffect(() => {
       </div>
     </div>
 
-    {/* Subject Filter - 50% width */}
+  
     <div className="flex-1">
       <label htmlFor="subject" className="block text-sm font-medium text-gray-700 mb-2">Subject</label>
       <div className="relative">
@@ -216,9 +223,9 @@ useEffect(() => {
     </div>
   </div>
 
-  {/* Location Filters Row */}
+ 
   <div className="grid grid-cols-2 md:grid-cols-2 gap-5 mb-5">
-    {/* Current Location */}
+    
     <div>
       <div className="flex items-center gap-2 mb-3">
         <FaSchool className="text-blue-500 text-base" />
@@ -264,7 +271,7 @@ useEffect(() => {
       </div>
     </div>
 
-    {/* Preferred Location */}
+
     <div>
       <div className="flex items-center gap-2 mb-3">
         <FaExchangeAlt className="text-green-500 text-base" />
@@ -311,7 +318,7 @@ useEffect(() => {
     </div>
   </div>
 
-  {/* Actions Row */}
+
   <div className="flex justify-between items-center pt-5 border-t border-gray-200">
     <button
       onClick={clearFilters}
@@ -325,7 +332,7 @@ useEffect(() => {
     </div>
   </div>
 </div>
-{/* Teacher Details Modal */}
+
 {showDetailsModal && selectedTeacher && (
   <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center p-4 z-50">
     <div className="bg-white rounded-xl shadow-xl max-w-2xl w-full max-h-[90vh] overflow-y-auto">
@@ -341,7 +348,7 @@ useEffect(() => {
         </div>
 
         <div className="space-y-4">
-          {/* Basic Info */}
+ 
           <div className="bg-gray-50 p-4 rounded-lg">
             <h3 className="font-medium text-gray-700 mb-3">Professional Information</h3>
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
@@ -349,10 +356,7 @@ useEffect(() => {
                 <p className="text-sm text-gray-500">Position</p>
                 <p className="font-medium">{selectedTeacher.position || 'Not specified'}</p>
               </div>
-              <div>
-                <p className="text-sm text-gray-500">Status</p>
-                <StatusBadge status={selectedTeacher.status} />
-              </div>
+             
               <div>
                 <p className="text-sm text-gray-500">Subjects</p>
                 <div className="flex flex-wrap gap-1 mt-1">
@@ -390,7 +394,6 @@ useEffect(() => {
             </div>
           </div>
 
-          {/* Current School */}
           <div className="bg-blue-50 p-4 rounded-lg border border-blue-100">
             <div className="flex items-center gap-2 mb-3">
               <FaSchool className="text-blue-500" />
@@ -400,7 +403,7 @@ useEffect(() => {
             <p className="text-gray-600">{selectedTeacher.currentLocation}</p>
           </div>
 
-          {/* Preferred Location */}
+    
           <div className="bg-green-50 p-4 rounded-lg border border-green-100">
             <div className="flex items-center gap-2 mb-3">
               <FaExchangeAlt className="text-green-500" />
@@ -415,7 +418,7 @@ useEffect(() => {
             )}
           </div>
 
-          {/* Contact Information */}
+        
           <div className="bg-gray-50 p-4 rounded-lg">
             <h3 className="font-medium text-gray-700 mb-3">Contact Information</h3>
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
@@ -449,7 +452,7 @@ useEffect(() => {
     </div>
   </div>
 )}
-        {/* Transfer Requests List */}
+
         <div className="space-y-4">
           {filteredRequests.length > 0 ? (
             filteredRequests.map(request => (
@@ -460,7 +463,7 @@ useEffect(() => {
                   <div>
                     <div className="flex items-center gap-3 mb-2">
                       <h3 className="text-xl font-semibold text-gray-800">{request.name}</h3>
-                      <StatusBadge status={request.status} />
+                     
                     </div>
                     <div className="flex items-center text-gray-500 text-sm mb-1">
                       <FaChalkboardTeacher className="mr-2" />
@@ -494,7 +497,7 @@ useEffect(() => {
                 
                 <div className="flex flex-wrap justify-between items-center gap-4">
                   <div className="flex items-center gap-4">
-                    {/* Additional info can go here */}
+               
                   </div>
                   
                   <div className="flex gap-2">
