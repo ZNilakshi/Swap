@@ -44,6 +44,8 @@
     "escape-html": "^1.0.3",
     "etag": "^1.8.1",
     "express": "^5.1.0",
+    "express-mongo-sanitize": "^2.2.0",
+    "express-rate-limit": "^7.5.0",
     "express-session": "^1.18.1",
     "fill-range": "^7.1.1",
     "finalhandler": "^2.1.0",
@@ -62,6 +64,7 @@
     "has-tostringtag": "^1.0.2",
     "hasown": "^2.0.2",
     "helmet": "^8.1.0",
+    "hpp": "^0.2.3",
     "http-errors": "^2.0.0",
     "iconv-lite": "^0.6.3",
     "ignore-by-default": "^1.0.1",
@@ -149,7 +152,8 @@
     "vary": "^1.1.2",
     "webidl-conversions": "^7.0.0",
     "whatwg-url": "^14.2.0",
-    "wrappy": "^1.0.2"
+    "wrappy": "^1.0.2",
+    "xss-clean": "^0.1.4"
   },
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",

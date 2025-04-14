@@ -1,8 +1,7 @@
-import React, { useState } from 'react';
+import React, { useState , useEffect } from 'react';
 import TransferRequestForm from '../components/TeacherTransferRequests';
 import { 
   FaSearch, 
-
   FaCalendarAlt,
   FaSchool,
   FaChalkboardTeacher,
@@ -10,6 +9,7 @@ import {
   FaWhatsapp
 } from 'react-icons/fa';
 import { IoMdClose } from 'react-icons/io';
+import axios from 'axios';
 
 const TeacherTransferRequests = () => {
   const [filters, setFilters] = useState({
@@ -20,66 +20,43 @@ const TeacherTransferRequests = () => {
     preferredCity: 'Any City'
   });
 
-  const [activeTab, setActiveTab] = useState('all');
+ 
   const [searchQuery, setSearchQuery] = useState('');
   const [showForm, setShowForm] = useState(false);
   const [selectedTeacher, setSelectedTeacher] = useState(null);
-const [showDetailsModal, setShowDetailsModal] = useState(false);
-
-const transferRequests = [
-  {
-    id: 1,
-    name: 'Kumari Perera',
-    currentSchool: 'Viharamahadevi Balika Vidyalaya',
-    currentLocation: 'Colombo, Colombo',
-    subjects: ['Mathematics', 'Physics'],
-    position: 'SLTS 3(1) A',
-    qualifications: ['Graduated', 'Primary Diploma'],
-    grades: ['Grade 6', 'Grade 7', 'Grade 8'],
-    preferredLocation: 'Negombo, Gampaha',
-    postedDate: '2023-10-15',
-    phone: '0702610614',
+  const [showDetailsModal, setShowDetailsModal] = useState(false);
+  const [transferRequests, setTransferRequests] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
   
-    status: 'pending'
-  },
-  {
-    id: 2,
-    name: 'Saman Kumara',
-    currentSchool: 'Ananda College',
-    currentLocation: 'Colombo, Colombo',
-    subjects: ['Science', 'Chemistry'],
-    position: 'SLTS 2(1) B',
-    qualifications: ['Graduated', 'Postgraduate Diploma'],
-    grades: ['Grade 10', 'Grade 11'],
-    preferredLocation: 'Kandy, Kandy',
-    postedDate: '2023-10-18',
-    phone: '077-7654321',
+const handleCreateRequest = () => {
+  setShowForm(true);
+};
+// Fetch transfer requests from API
+useEffect(() => {
+  const fetchTransferRequests = async () => {
+    try {
+      setLoading(true);
+      const response = await axios.get('/api/transfer-requests');
+      setTransferRequests(response.data);
+      setError(null);
+    } catch (err) {
+      console.error('Error fetching transfer requests:', err);
+      setError('Failed to load transfer requests. Please try again later.');
+    } finally {
+      setLoading(false);
+    }
+  };
 
-    status: 'pending'
-  },
-  {
-    id: 4,
-    name: 'Priyangika Fernando',
-    currentSchool: 'Devi Balika Vidyalaya',
-    currentLocation: 'Colombo, Colombo',
-    subjects: ['History', 'Sinhala'],
-    position: 'SLTS 1(1) A',
-    qualifications: ['Graduated'],
-    grades: ['Grade 3', 'Grade 4', 'Grade 5'],
-    preferredLocation: 'Matara, Matara',
-    postedDate: '2023-10-22',
-    phone: '076-5432198',
+  fetchTransferRequests();
+}, []);
 
-    status: 'completed'
-  }
-];
   const openTeacherDetails = (teacher) => {
     setSelectedTeacher(teacher);
     setShowDetailsModal(true);
   };
   const filteredRequests = transferRequests.filter(request => {
     
-    if (activeTab !== 'all' && request.status !== activeTab) return false;
     
     // Filter by search query
     if (searchQuery && 
@@ -159,13 +136,21 @@ const transferRequests = [
 
   return (
     <div className="min-h-screen bg-gray-50">
-      {showForm ? (
-        <TransferRequestForm onCloseForm={() => setShowForm(false)} />
-      ) : (
-        <button onClick={() => setShowForm(true)}>
-          Create Transfer Request
-        </button>
-      )}
+     {showForm ? (
+  <TransferRequestForm onCloseForm={() => setShowForm(false)} />
+) : (
+  <div className="fixed bottom-6 right-6 z-10">
+    <button 
+      onClick={handleCreateRequest}
+      className="flex items-center justify-center gap-2 px-6 py-3 bg-gradient-to-r from-blue-600 to-blue-500 text-white rounded-full shadow-lg hover:shadow-xl transition-all hover:scale-105 transform focus:outline-none focus:ring-2 focus:ring-blue-400 focus:ring-opacity-75"
+    >
+      <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
+        <path fillRule="evenodd" d="M10 3a1 1 0 011 1v5h5a1 1 0 110 2h-5v5a1 1 0 11-2 0v-5H4a1 1 0 110-2h5V4a1 1 0 011-1z" clipRule="evenodd" />
+      </svg>
+      <span className="font-semibold text-sm sm:text-base">Create Transfer Request</span>
+    </button>
+  </div>
+)}
       <div className="container mx-auto px-4 py-8">
         {/* Header Section */}
         <div className="mb-8">
@@ -173,27 +158,7 @@ const transferRequests = [
           <p className="text-gray-600">Find and connect with teachers for mutual transfers across Sri Lanka</p>
         </div>
         
-        {/* Tabs */}
-        <div className="flex border-b border-gray-200 mb-6">
-          <button
-            onClick={() => setActiveTab('all')}
-            className={`px-4 py-2 font-medium ${activeTab === 'all' ? 'text-blue-600 border-b-2 border-blue-600' : 'text-gray-500 hover:text-gray-700'}`}
-          >
-            All Requests
-          </button>
-          <button
-            onClick={() => setActiveTab('pending')}
-            className={`px-4 py-2 font-medium ${activeTab === 'pending' ? 'text-blue-600 border-b-2 border-blue-600' : 'text-gray-500 hover:text-gray-700'}`}
-          >
-            Pending
-          </button>
-          <button
-            onClick={() => setActiveTab('completed')}
-            className={`px-4 py-2 font-medium ${activeTab === 'completed' ? 'text-blue-600 border-b-2 border-blue-600' : 'text-gray-500 hover:text-gray-700'}`}
-          >
-            Completed
-          </button>
-        </div>
+     
         
 {/* Search and Filter Section */}
 <div className="bg-white rounded-lg shadow-sm p-5 mb-6 border border-gray-100">

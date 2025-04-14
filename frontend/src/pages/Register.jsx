@@ -21,6 +21,10 @@ function Register() {
       alert('Error: ' + err.response?.data?.msg || 'Something went wrong');
     }
   };
+  const handleGoogleLogin = () => {
+    window.location.href = 'http://localhost:5000/api/auth/google'; // Adjust if backend is hosted elsewhere
+  };
+  
 
   return (
     <div className="flex items-center justify-center min-h-screen bg-gray-50">
@@ -69,10 +73,14 @@ function Register() {
           <div className="flex-grow h-px bg-gray-300" />
         </div>
 
-        <button className="w-full flex items-center justify-center gap-2 border py-3 rounded-lg hover:bg-gray-100">
-          <img src="https://www.svgrepo.com/show/475656/google-color.svg" alt="Google" className="w-5 h-5" />
-          <span>Sign up with Google</span>
-        </button>
+        <button
+  onClick={handleGoogleLogin}
+  className="w-full flex items-center justify-center gap-2 border py-3 rounded-lg hover:bg-gray-100"
+>
+  <img src="https://www.svgrepo.com/show/475656/google-color.svg" alt="Google" className="w-5 h-5" />
+  <span>Sign up with Google</span>
+</button>
+
 
         <p className="text-center text-sm text-gray-500 mt-4">
           Already have an account?{' '}

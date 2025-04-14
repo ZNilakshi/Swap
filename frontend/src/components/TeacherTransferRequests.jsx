@@ -2,15 +2,13 @@ import React, { useState } from 'react';
 import { 
   FaUser, 
   FaSchool, 
- 
   FaChalkboardTeacher,
-  
   FaExchangeAlt,
-  
   FaPhone,
   FaInfoCircle
 } from 'react-icons/fa';
 import { IoMdClose } from 'react-icons/io';
+import axios from 'axios';
 
 const TransferRequestForm = ({ onCloseForm }) => {
   const [formData, setFormData] = useState({
@@ -27,7 +25,7 @@ const TransferRequestForm = ({ onCloseForm }) => {
     preferredReason: '',
     phone: '',
     additionalContact: '',
-    status: 'pending'
+
   });
 
   const [currentSubject, setCurrentSubject] = useState('');
@@ -59,13 +57,19 @@ const TransferRequestForm = ({ onCloseForm }) => {
       [field]: prev[field].filter((_, i) => i !== index)
     }));
   };
-
-  const handleSubmit = (e) => {
+const [isSubmitting, setIsSubmitting] = useState(false);
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    // Here you would typically send the data to your backend
-    console.log('Form submitted:', formData);
-    // After submission, you might want to close the form
-    onCloseForm();
+    try {
+      const response = await axios.post('http://localhost:5000/api/transfer-requests', formData);
+      console.log('Request created:', response.data);
+      onCloseForm();
+      // Optionally show success message
+      alert('Transfer request submitted successfully!');
+    } catch (err) {
+      console.error('Error creating request:', err);
+      alert('Failed to create request: ' + (err.response?.data?.msg || err.message));
+    }
   };
 
   return (
@@ -412,11 +416,12 @@ const TransferRequestForm = ({ onCloseForm }) => {
                 Cancel
               </button>
               <button
-                type="submit"
-                className="px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700"
-              >
-                Submit Transfer Request
-              </button>
+  type="submit"
+  className="px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700 disabled:opacity-50"
+  disabled={isSubmitting}
+>
+  {isSubmitting ? 'Submitting...' : 'Submit Transfer Request'}
+</button>
             </div>
           </form>
         </div>

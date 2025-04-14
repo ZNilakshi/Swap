@@ -1,21 +1,61 @@
 const express = require('express');
 const mongoose = require('mongoose');
-const passport = require('passport');
-const session = require('express-session');
 const cors = require('cors');
-require('dotenv').config();
-require('./config/passport');
-
+const bodyParser = require('body-parser');
 const app = express();
-app.use(cors({ origin: process.env.CLIENT_URL, credentials: true }));
-app.use(express.json());
 
-app.use(session({ secret: 'secret', resave: false, saveUninitialized: false }));
-app.use(passport.initialize());
-app.use(passport.session());
+// Middleware
+app.use(cors());
+app.use(bodyParser.json());
 
-app.use('/api/auth', require('./routes/authRoutes'));
+// MongoDB Atlas connection
+const mongoURI = 'mongodb+srv://olysamarasekara:rUBykBv8QTjImf3L@cluster0.ird1whj.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0';
 
-mongoose.connect(process.env.MONGO_URI)
-  .then(() => app.listen(5000, () => console.log('Server running on port 5000')))
-  .catch(err => console.log(err));
+mongoose.connect(mongoURI, {
+  useNewUrlParser: true,
+  useUnifiedTopology: true
+})
+.then(() => console.log('MongoDB connected'))
+.catch(err => console.log('MongoDB connection error:', err));
+
+// Transfer Request Model
+const TransferRequest = mongoose.model('TransferRequest', new mongoose.Schema({
+  name: String,
+  currentSchool: String,
+  currentDistrict: String,
+  currentCity: String,
+  subjects: [String],
+  position: String,
+  qualifications: [String],
+  grades: [String],
+  preferredDistrict: String,
+  preferredCity: String,
+  preferredReason: String,
+  phone: String,
+  additionalContact: String,
+  status: { type: String, default: 'pending' },
+  createdAt: { type: Date, default: Date.now }
+}));
+
+// API Routes
+app.post('/api/transfer-requests', async (req, res) => {
+  try {
+    const newRequest = new TransferRequest(req.body);
+    await newRequest.save();
+    res.status(201).json(newRequest);
+  } catch (err) {
+    res.status(400).json({ msg: err.message });
+  }
+});
+// In your server.js or routes file
+app.get('/api/transfer-requests', async (req, res) => {
+  try {
+    const requests = await TransferRequest.find().sort({ createdAt: -1 });
+    res.json(requests);
+  } catch (err) {
+    res.status(500).json({ msg: 'Server error' });
+  }
+});
+// Start server
+const PORT = process.env.PORT || 5000;
+app.listen(PORT, () => console.log(`Server running on port ${PORT}`));
