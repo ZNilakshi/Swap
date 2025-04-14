@@ -1,77 +1,100 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { FiStar, FiUser, FiSend, FiX } from 'react-icons/fi';
 import { motion, AnimatePresence } from 'framer-motion';
+import axios from 'axios';
 
 const avatarImages = [
   'https://avataaars.io/?avatarStyle=Circle&topType=ShortHairShortFlat&accessoriesType=Prescription02&hairColor=Black&facialHairType=Blank&clotheType=BlazerShirt&eyeType=Default&eyebrowType=Default&mouthType=Default&skinColor=Light',
   'https://avataaars.io/?avatarStyle=Circle&topType=LongHairBun&accessoriesType=Round&hairColor=BrownDark&facialHairType=Blank&clotheType=ShirtCrewNeck&clotheColor=Blue03&eyeType=Happy&eyebrowType=Default&mouthType=Smile&skinColor=Light',
   'https://avataaars.io/?avatarStyle=Circle&topType=ShortHairShortWaved&accessoriesType=Blank&hairColor=BlondeGolden&facialHairType=Blank&clotheType=BlazerSweater&eyeType=Default&eyebrowType=Default&mouthType=Default&skinColor=Tanned'
 ];
+const API_URL = 'http://localhost:5000/api/reviews'; // Changed from https to http for local development
 
 const ReviewComponent = () => {
   const [rating, setRating] = useState(0);
   const [hoverRating, setHoverRating] = useState(0);
   const [name, setName] = useState('');
   const [comment, setComment] = useState('');
-  const [reviews, setReviews] = useState([
-    { 
-      id: 1, 
-      name: "Alex Johnson", 
-      rating: 5, 
-      comment: "The transfer process was seamless and professional.", 
-      date: "2 days ago", 
-      avatar: avatarImages[0] 
-    },
-    { 
-      id: 2, 
-      name: "Sam Lee", 
-      rating: 4, 
-      comment: "Great communication throughout the entire process.", 
-      date: "1 week ago", 
-      avatar: avatarImages[1] 
-    },
-    { 
-      id: 3, 
-      name: "Taylor Smith", 
-      rating: 5, 
-      comment: "Extremely helpful and responsive to all my questions.", 
-      date: "3 days ago", 
-      avatar: avatarImages[2] 
-    },
-    { 
-      id: 4, 
-      name: "Jordan Williams", 
-      rating: 4, 
-      comment: "Made the transfer process much easier than expected.", 
-      date: "2 weeks ago", 
-      avatar: avatarImages[0] 
-    }
-  ]);
+  const [reviews, setReviews] = useState([]);
   const [showForm, setShowForm] = useState(false);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
 
-  const handleSubmit = (e) => {
+  // Fetch reviews from MongoDB
+  useEffect(() => {
+    const fetchReviews = async () => {
+      try {
+        const response = await axios.get(API_URL);
+        // Format the reviews with dates and default avatars if needed
+        const formattedReviews = response.data.map(review => ({
+          ...review,
+          date: formatDate(review.createdAt),
+          avatar: review.avatar || avatarImages[Math.floor(Math.random() * avatarImages.length)]
+        }));
+        setReviews(formattedReviews);
+        setLoading(false);
+      } catch (err) {
+        setError(err.message);
+        setLoading(false);
+        console.error('Error fetching reviews:', err);
+      }
+    };
+
+    fetchReviews();
+  }, []);
+
+  // Helper function to format date
+  const formatDate = (dateString) => {
+    const date = new Date(dateString);
+    const now = new Date();
+    const diffInSeconds = Math.floor((now - date) / 1000);
+    
+    if (diffInSeconds < 60) return 'Just now';
+    if (diffInSeconds < 3600) return `${Math.floor(diffInSeconds / 60)} minutes ago`;
+    if (diffInSeconds < 86400) return `${Math.floor(diffInSeconds / 3600)} hours ago`;
+    if (diffInSeconds < 604800) return `${Math.floor(diffInSeconds / 86400)} days ago`;
+    return date.toLocaleDateString();
+  };
+
+  const handleSubmit = async (e) => {
     e.preventDefault();
     if (rating > 0 && comment && name) {
-      const newReview = {
-        id: Date.now(),
-        name,
-        rating,
-        comment,
-        date: "Just now",
-        avatar: avatarImages[Math.floor(Math.random() * avatarImages.length)]
-      };
-      setReviews([newReview, ...reviews]);
-      setRating(0);
-      setName('');
-      setComment('');
-      setShowForm(false);
+      try {
+        const newReviewData = {
+          name,
+          rating,
+          comment,
+          avatar: avatarImages[Math.floor(Math.random() * avatarImages.length)]
+        };
+
+        // Send the review to the server
+        const response = await axios.post(API_URL, newReviewData);
+        
+        // Add the new review to the local state with formatted date
+        const newReview = {
+          ...response.data,
+          date: 'Just now',
+          id: response.data._id // Use the MongoDB _id as id
+        };
+        
+        setReviews([newReview, ...reviews]);
+        setRating(0);
+        setName('');
+        setComment('');
+        setShowForm(false);
+      } catch (err) {
+        console.error('Error submitting review:', err);
+        setError('Failed to submit review. Please try again.');
+      }
     }
   };
 
-  // Group reviews into pairs for 2-column layout
-  const reviewPairs = [];
-  for (let i = 0; i < reviews.length; i += 2) {
-    reviewPairs.push(reviews.slice(i, i + 2));
+  if (loading) {
+    return <div className="max-w-6xl mx-auto p-6">Loading reviews...</div>;
+  }
+
+  if (error) {
+    return <div className="max-w-6xl mx-auto p-6 text-red-500">Error: {error}</div>;
   }
 
   return (
@@ -178,6 +201,8 @@ const ReviewComponent = () => {
                 />
               </div>
               
+              {error && <div className="mb-4 text-red-500 text-sm">{error}</div>}
+              
               <button
                 type="submit"
                 disabled={!rating || !comment || !name}
@@ -199,7 +224,7 @@ const ReviewComponent = () => {
       <div className="space-y-4 md:space-y-0 md:grid md:grid-cols-2 md:gap-6">
         {reviews.map((review) => (
           <motion.div 
-            key={review.id}
+            key={review._id || review.id} // Use _id from MongoDB if available
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.3 }}

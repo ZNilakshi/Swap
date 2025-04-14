@@ -3,6 +3,7 @@ const mongoose = require('mongoose');
 const cors = require('cors');
 const bodyParser = require('body-parser');
 const app = express();
+const Review = require('./models/Review');
 
 // Middleware
 app.use(cors());
@@ -56,6 +57,32 @@ app.get('/api/transfer-requests', async (req, res) => {
     res.status(500).json({ msg: 'Server error' });
   }
 });
+
+app.get('/api/reviews', async (req, res) => {
+  try {
+    const reviews = await Review.find().sort({ createdAt: -1 });
+    res.json(reviews);
+  } catch (err) {
+    res.status(500).json({ message: err.message });
+  }
+});
+
+app.post('/api/reviews', async (req, res) => {
+  const review = new Review({
+    name: req.body.name,
+    rating: req.body.rating,
+    comment: req.body.comment,
+    avatar: req.body.avatar
+  });
+
+  try {
+    const newReview = await review.save();
+    res.status(201).json(newReview);
+  } catch (err) {
+    res.status(400).json({ message: err.message });
+  }
+});
+
 // Start server
 const PORT = process.env.PORT || 5000;
 app.listen(PORT, () => console.log(`Server running on port ${PORT}`));
