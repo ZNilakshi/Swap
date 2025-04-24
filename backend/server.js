@@ -8,26 +8,23 @@ const TransferRequest = require('./models/TransferRequest');
 
 require('dotenv').config();
 
+// ✅ Set up CORS properly
 const allowedOrigins = [
   'http://localhost:3000',
   'https://swap-ayoh.vercel.app'
 ];
 
-const corsOptions = {
+app.use(cors({
   origin: function (origin, callback) {
-    console.log('Request origin:', origin);
     if (!origin || allowedOrigins.includes(origin)) {
       callback(null, true);
     } else {
-      console.log('❌ Blocked by CORS:', origin);
       callback(new Error('Not allowed by CORS'));
     }
   },
   credentials: true
-};
+}));
 
-app.use(cors(corsOptions));
-app.options('*', cors(corsOptions)); // handle preflight
 app.use(bodyParser.json());
 
 // MongoDB Atlas connection
@@ -83,6 +80,6 @@ app.post('/api/reviews', async (req, res) => {
   }
 });
 
-
+// Start server
 const PORT = process.env.PORT || 5000;
 app.listen(PORT, () => console.log(`Server running on port ${PORT}`));
