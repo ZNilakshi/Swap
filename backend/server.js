@@ -8,8 +8,23 @@ const TransferRequest = require('./models/TransferRequest');
 
 require('dotenv').config();
 
+// ✅ Set up CORS properly
+const allowedOrigins = [
+  'http://localhost:3000',
+  'https://swap-ayoh.vercel.app'
+];
 
-app.use(cors());
+app.use(cors({
+  origin: function (origin, callback) {
+    if (!origin || allowedOrigins.includes(origin)) {
+      callback(null, true);
+    } else {
+      callback(new Error('Not allowed by CORS'));
+    }
+  },
+  credentials: true
+}));
+
 app.use(bodyParser.json());
 
 // MongoDB Atlas connection
@@ -19,8 +34,6 @@ mongoose.connect(process.env.MONGO_URI, {
 })
 .then(() => console.log('MongoDB connected'))
 .catch(err => console.log('MongoDB connection error:', err));
-
-
 
 // API Routes
 app.post('/api/transfer-requests', async (req, res) => {
@@ -32,7 +45,7 @@ app.post('/api/transfer-requests', async (req, res) => {
     res.status(400).json({ msg: err.message });
   }
 });
-// In your server.js or routes file
+
 app.get('/api/transfer-requests', async (req, res) => {
   try {
     const requests = await TransferRequest.find().sort({ createdAt: -1 });
