@@ -8,7 +8,7 @@ const avatarImages = [
   'https://avataaars.io/?avatarStyle=Circle&topType=LongHairBun&accessoriesType=Round&hairColor=BrownDark&facialHairType=Blank&clotheType=ShirtCrewNeck&clotheColor=Blue03&eyeType=Happy&eyebrowType=Default&mouthType=Smile&skinColor=Light',
   'https://avataaars.io/?avatarStyle=Circle&topType=ShortHairShortWaved&accessoriesType=Blank&hairColor=BlondeGolden&facialHairType=Blank&clotheType=BlazerSweater&eyeType=Default&eyebrowType=Default&mouthType=Default&skinColor=Tanned'
 ];
-const API_URL = 'http://localhost:5000/api/reviews'; // Changed from https to http for local development
+const API_URL = `${process.env.REACT_APP_API_URL}/reviews`;
 
 const ReviewComponent = () => {
   const [rating, setRating] = useState(0);

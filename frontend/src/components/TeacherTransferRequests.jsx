@@ -58,19 +58,26 @@ const TransferRequestForm = ({ onCloseForm }) => {
     }));
   };
 const [isSubmitting, setIsSubmitting] = useState(false);
-  const handleSubmit = async (e) => {
-    e.preventDefault();
-    try {
-      const response = await axios.post('http://localhost:5000/api/transfer-requests', formData);
-      console.log('Request created:', response.data);
-      onCloseForm();
 
-      alert('Transfer request submitted successfully!');
-    } catch (err) {
-      console.error('Error creating request:', err);
-      alert('Failed to create request: ' + (err.response?.data?.msg || err.message));
-    }
-  };
+const handleSubmit = async (e) => {
+  e.preventDefault();
+  setIsSubmitting(true);
+  try {
+    const response = await axios.post(
+      `${process.env.REACT_APP_API_URL}/transfer-requests`,
+      formData
+    );
+    console.log('Request created:', response.data);
+    onCloseForm();
+    alert('Transfer request submitted successfully!');
+  } catch (err) {
+    console.error('Error creating request:', err);
+    alert('Failed to create request: ' + (err.response?.data?.msg || err.message));
+  } finally {
+    setIsSubmitting(false);
+  }
+};
+
 
   return (
     <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center p-4 z-50">

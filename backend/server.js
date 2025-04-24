@@ -4,39 +4,23 @@ const cors = require('cors');
 const bodyParser = require('body-parser');
 const app = express();
 const Review = require('./models/Review');
+const TransferRequest = require('./models/TransferRequest'); 
 
-// Middleware
+require('dotenv').config();
+
+
 app.use(cors());
 app.use(bodyParser.json());
 
 // MongoDB Atlas connection
-const mongoURI = 'mongodb+srv://olysamarasekara:rUBykBv8QTjImf3L@cluster0.ird1whj.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0';
-
-mongoose.connect(mongoURI, {
+mongoose.connect(process.env.MONGO_URI, {
   useNewUrlParser: true,
   useUnifiedTopology: true
 })
 .then(() => console.log('MongoDB connected'))
 .catch(err => console.log('MongoDB connection error:', err));
 
-// Transfer Request Model
-const TransferRequest = mongoose.model('TransferRequest', new mongoose.Schema({
-  name: String,
-  currentSchool: String,
-  currentDistrict: String,
-  currentCity: String,
-  subjects: [String],
-  position: String,
-  qualifications: [String],
-  grades: [String],
-  preferredDistrict: String,
-  preferredCity: String,
-  preferredReason: String,
-  phone: String,
-  additionalContact: String,
-  status: { type: String, default: 'pending' },
-  createdAt: { type: Date, default: Date.now }
-}));
+
 
 // API Routes
 app.post('/api/transfer-requests', async (req, res) => {

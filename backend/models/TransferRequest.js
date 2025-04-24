@@ -1,21 +1,21 @@
 const mongoose = require('mongoose');
 
 const transferRequestSchema = new mongoose.Schema({
-  user: { type: mongoose.Schema.Types.ObjectId, ref: 'User', required: true },
-  name: { type: String, required: true },
-  currentSchool: { type: String, required: true },
-  currentDistrict: { type: String, required: true },
-  currentCity: { type: String, required: true },
-  subjects: [{ type: String }],
-  position: { type: String, required: true },
-  qualifications: [{ type: String }],
-  grades: [{ type: String }],
-  preferredDistrict: { type: String, required: true },
-  preferredCity: { type: String, required: true },
-  preferredReason: { type: String },
-  phone: { type: String, required: true },
-  additionalContact: { type: String },
-  postedDate: { type: Date, default: Date.now }
+  name: String,
+  currentSchool: String,
+  currentDistrict: String,
+  currentCity: String,
+  subjects: [String],
+  position: String,
+  qualifications: [String],
+  grades: [String],
+  preferredDistrict: String,
+  preferredCity: String,
+  preferredReason: String,
+  phone: String,
+  additionalContact: String,
+  status: { type: String, default: 'pending' },
+  createdAt: { type: Date, default: Date.now }
 });
 
 module.exports = mongoose.model('TransferRequest', transferRequestSchema);
