@@ -5,25 +5,32 @@ const bodyParser = require('body-parser');
 const app = express();
 const Review = require('./models/Review');
 const TransferRequest = require('./models/TransferRequest'); 
+
 require('dotenv').config();
 
-// ✅ CORS configuration
 const allowedOrigins = [
   'http://localhost:3000',
   'https://swap-ayoh.vercel.app'
 ];
 
-app.use(cors({
-  origin: allowedOrigins,
+const corsOptions = {
+  origin: function (origin, callback) {
+    console.log('Request origin:', origin);
+    if (!origin || allowedOrigins.includes(origin)) {
+      callback(null, true);
+    } else {
+      console.log('❌ Blocked by CORS:', origin);
+      callback(new Error('Not allowed by CORS'));
+    }
+  },
   credentials: true
-}));
+};
 
-// ✅ Ensure preflight (OPTIONS) requests are handled
-app.options('*', cors());
-
+app.use(cors(corsOptions));
+app.options('*', cors(corsOptions)); // handle preflight
 app.use(bodyParser.json());
 
-// ✅ MongoDB Atlas connection
+// MongoDB Atlas connection
 mongoose.connect(process.env.MONGO_URI, {
   useNewUrlParser: true,
   useUnifiedTopology: true
@@ -31,9 +38,7 @@ mongoose.connect(process.env.MONGO_URI, {
 .then(() => console.log('MongoDB connected'))
 .catch(err => console.log('MongoDB connection error:', err));
 
-// ✅ API Routes
-
-// POST transfer request
+// API Routes
 app.post('/api/transfer-requests', async (req, res) => {
   try {
     const newRequest = new TransferRequest(req.body);
@@ -44,7 +49,6 @@ app.post('/api/transfer-requests', async (req, res) => {
   }
 });
 
-// GET all transfer requests
 app.get('/api/transfer-requests', async (req, res) => {
   try {
     const requests = await TransferRequest.find().sort({ createdAt: -1 });
@@ -54,7 +58,6 @@ app.get('/api/transfer-requests', async (req, res) => {
   }
 });
 
-// GET all reviews
 app.get('/api/reviews', async (req, res) => {
   try {
     const reviews = await Review.find().sort({ createdAt: -1 });
@@ -64,7 +67,6 @@ app.get('/api/reviews', async (req, res) => {
   }
 });
 
-// POST a new review
 app.post('/api/reviews', async (req, res) => {
   const review = new Review({
     name: req.body.name,
@@ -81,6 +83,6 @@ app.post('/api/reviews', async (req, res) => {
   }
 });
 
-// ✅ Start the server
+
 const PORT = process.env.PORT || 5000;
 app.listen(PORT, () => console.log(`Server running on port ${PORT}`));
