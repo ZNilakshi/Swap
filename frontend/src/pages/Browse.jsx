@@ -26,30 +26,23 @@ const TeacherTransferRequests = () => {
   const [selectedTeacher, setSelectedTeacher] = useState(null);
   const [showDetailsModal, setShowDetailsModal] = useState(false);
   const [transferRequests, setTransferRequests] = useState([]);
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState(null);
 
 const handleCreateRequest = () => {
   setShowForm(true);
 };
-// Fetch transfer requests from API
 useEffect(() => {
   const fetchTransferRequests = async () => {
     try {
-      setLoading(true);
       const response = await axios.get('/api/transfer-requests');
       setTransferRequests(response.data);
-      setError(null);
     } catch (err) {
       console.error('Error fetching transfer requests:', err);
-      setError('Failed to load transfer requests. Please try again later.');
-    } finally {
-      setLoading(false);
     }
   };
 
   fetchTransferRequests();
 }, []);
+
 
   const openTeacherDetails = (teacher) => {
     setSelectedTeacher(teacher);

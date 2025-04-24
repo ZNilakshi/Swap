@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { FiStar, FiUser, FiSend, FiX } from 'react-icons/fi';
+import { FiStar,  FiSend, FiX } from 'react-icons/fi';
 import { motion, AnimatePresence } from 'framer-motion';
 import axios from 'axios';
 
