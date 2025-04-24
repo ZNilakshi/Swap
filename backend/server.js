@@ -2,37 +2,55 @@ const express = require('express');
 const mongoose = require('mongoose');
 const cors = require('cors');
 const bodyParser = require('body-parser');
-const app = express();
-const Review = require('./models/Review');
-const TransferRequest = require('./models/TransferRequest'); 
-
 require('dotenv').config();
 
-// ✅ Set up CORS properly
+const app = express();
+const Review = require('./models/Review');
+const TransferRequest = require('./models/TransferRequest');
+
+// ✅ Allowed origins for CORS
 const allowedOrigins = [
   'http://localhost:3000',
-  'https://swap-ayoh.vercel.app'
+  'https://swap-ayoh.vercel.app',
+  'https://www.swap-ayoh.vercel.app',
 ];
 
+// ✅ Log incoming origin for debugging
+app.use((req, res, next) => {
+  console.log('🔍 Request from origin:', req.headers.origin);
+  next();
+});
+
+// ✅ CORS middleware
 app.use(cors({
   origin: function (origin, callback) {
     if (!origin || allowedOrigins.includes(origin)) {
       callback(null, true);
     } else {
+      console.error('❌ CORS blocked for origin:', origin);
       callback(new Error('Not allowed by CORS'));
     }
   },
   credentials: true
 }));
 
+// ✅ Handle preflight requests globally
+app.options('*', cors());
+
+// ✅ Parse incoming JSON
 app.use(bodyParser.json());
 
+// ✅ MongoDB connection
 mongoose.connect(process.env.MONGO_URI)
+  .then(() => console.log('✅ MongoDB connected'))
+  .catch(err => console.error('❌ MongoDB connection error:', err));
 
-.then(() => console.log('MongoDB connected'))
-.catch(err => console.log('MongoDB connection error:', err));
+// ✅ Test route for connectivity
+app.get('/test', (req, res) => {
+  res.json({ message: '✅ Backend is live & CORS is working!' });
+});
 
-// API Routes
+// ✅ Routes
 app.post('/api/transfer-requests', async (req, res) => {
   try {
     const newRequest = new TransferRequest(req.body);
@@ -77,6 +95,6 @@ app.post('/api/reviews', async (req, res) => {
   }
 });
 
-// Start server
+// ✅ Start server
 const PORT = process.env.PORT || 5000;
-app.listen(PORT, () => console.log(`Server running on port ${PORT}`));
+app.listen(PORT, () => console.log(`🚀 Server running on port ${PORT}`));
