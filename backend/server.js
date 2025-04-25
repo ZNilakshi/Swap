@@ -2,55 +2,40 @@ const express = require('express');
 const mongoose = require('mongoose');
 const cors = require('cors');
 const bodyParser = require('body-parser');
-require('dotenv').config();
-
 const app = express();
 const Review = require('./models/Review');
-const TransferRequest = require('./models/TransferRequest');
+const TransferRequest = require('./models/TransferRequest'); 
 
-// ✅ Allowed origins for CORS
+require('dotenv').config();
+
+// ✅ Set up CORS properly
 const allowedOrigins = [
   'http://localhost:3000',
-  'https://swap-ayoh.vercel.app',
-  'https://www.swap-ayoh.vercel.app',
+  'https://swap-ayoh.vercel.app'
 ];
 
-// ✅ Log incoming origin for debugging
-app.use((req, res, next) => {
-  console.log('🔍 Request from origin:', req.headers.origin);
-  next();
-});
-
-// ✅ CORS middleware
 app.use(cors({
   origin: function (origin, callback) {
     if (!origin || allowedOrigins.includes(origin)) {
       callback(null, true);
     } else {
-      console.error('❌ CORS blocked for origin:', origin);
       callback(new Error('Not allowed by CORS'));
     }
   },
   credentials: true
 }));
 
-// ✅ Handle preflight requests globally
-app.options('*', cors());
-
-// ✅ Parse incoming JSON
 app.use(bodyParser.json());
 
-// ✅ MongoDB connection
-mongoose.connect(process.env.MONGO_URI)
-  .then(() => console.log('✅ MongoDB connected'))
-  .catch(err => console.error('❌ MongoDB connection error:', err));
+// MongoDB Atlas connection
+mongoose.connect(process.env.MONGO_URI, {
+  useNewUrlParser: true,
+  useUnifiedTopology: true
+})
+.then(() => console.log('MongoDB connected'))
+.catch(err => console.log('MongoDB connection error:', err));
 
-// ✅ Test route for connectivity
-app.get('/test', (req, res) => {
-  res.json({ message: '✅ Backend is live & CORS is working!' });
-});
-
-// ✅ Routes
+// API Routes
 app.post('/api/transfer-requests', async (req, res) => {
   try {
     const newRequest = new TransferRequest(req.body);
@@ -95,6 +80,20 @@ app.post('/api/reviews', async (req, res) => {
   }
 });
 
-// ✅ Start server
 const PORT = process.env.PORT || 5000;
-app.listen(PORT, () => console.log(`🚀 Server running on port ${PORT}`));
+const server = app.listen(PORT, () => {
+    console.log(`Server running on port ${PORT}`);
+});
+
+server.on("error", (err) => {
+    if (err.code === "EADDRINUSE") {
+      console.error(`Port ${PORT} is already in use. Trying a different port...`);
+      
+      
+      const newServer = app.listen(0, () => {
+        console.log(`New server running on port ${newServer.address().port}`);
+      });
+    } else {
+      console.error(err);
+    }
+  });
