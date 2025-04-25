@@ -34,19 +34,26 @@ useEffect(() => {
   const fetchTransferRequests = async () => {
     try {
       const response = await axios.get('/api/transfer-requests');
-      const requestsWithGuaranteedIds = response.data.map((request, index) => ({
+      console.log('API Response:', response); // Add this to see the actual response structure
+      
+      // Ensure we're working with an array
+      const responseData = Array.isArray(response.data) 
+        ? response.data 
+        : response.data?.results || response.data?.items || [];
+      
+      const requestsWithGuaranteedIds = responseData.map((request, index) => ({
         ...request,
-        // Create a guaranteed unique ID if one doesn't exist
-        reactKey: request.id || request._id || `request-${index}-${Math.random().toString(36).slice(2, 9)}`
+        reactKey: request.id || request._id || `request-${index}-${Date.now()}`
       }));
+      
       setTransferRequests(requestsWithGuaranteedIds);
     } catch (err) {
       console.error('Error fetching transfer requests:', err);
+      setTransferRequests([]); // Set to empty array on error
     }
   };
   fetchTransferRequests();
 }, []);
-
   const openTeacherDetails = (teacher) => {
     setSelectedTeacher(teacher);
     setShowDetailsModal(true);
