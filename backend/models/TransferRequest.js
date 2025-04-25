@@ -14,7 +14,6 @@ const transferRequestSchema = new mongoose.Schema({
   preferredReason: String,
   phone: String,
   additionalContact: String,
-  status: { type: String, default: 'pending' },
   createdAt: { type: Date, default: Date.now }
 });
 

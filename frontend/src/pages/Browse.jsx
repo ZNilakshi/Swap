@@ -201,11 +201,32 @@ useEffect(() => {
           onChange={handleFilterChange}
           className="block w-full h-12 pl-3 pr-8 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 text-base appearance-none bg-white"
         >
-          <option>All Subjects</option>
-          <option>Mathematics</option>
-          <option>Science</option>
-          <option>English</option>
-          <option>History</option>
+         <option>Subjects</option>
+<option>Mathematics</option>
+<option>Science</option>
+<option>English</option>
+<option>History</option>
+<option>Geography</option>
+<option>Information Technology</option>
+<option>Biology</option>
+<option>Physics</option>
+<option>Chemistry</option>
+<option>Health Science</option>
+<option>Commerce</option>
+<option>Accounting</option>
+<option>Economics</option>
+<option>Business Studies</option>
+<option>Art</option>
+<option>Music</option>
+<option>Drama</option>
+<option>Physical Education</option>
+<option>Agriculture</option>
+<option>Civics</option>
+<option>Religion</option>
+<option>Tamil</option>
+<option>French</option>
+<option>Environmental Studies</option>
+
         </select>
         <div className="pointer-events-none absolute inset-y-0 right-0 flex items-center pr-3">
           <svg className="h-5 w-5 text-gray-400" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor">
@@ -233,9 +254,32 @@ useEffect(() => {
             className="block w-full h-12 pl-3 pr-8 border border-gray-300 rounded-lg text-base focus:ring-2 focus:ring-blue-500 focus:border-blue-500 appearance-none bg-white"
           >
             <option>All Districts</option>
-            <option>Colombo</option>
-            <option>Gampaha</option>
-            <option>polonnaruwa</option>
+<option>Ampara</option>
+<option>Anuradhapura</option>
+<option>Badulla</option>
+<option>Batticaloa</option>
+<option>Colombo</option>
+<option>Galle</option>
+<option>Gampaha</option>
+<option>Hambantota</option>
+<option>Jaffna</option>
+<option>Kalutara</option>
+<option>Kandy</option>
+<option>Kegalle</option>
+<option>Kilinochchi</option>
+<option>Kurunegala</option>
+<option>Mannar</option>
+<option>Matale</option>
+<option>Matara</option>
+<option>Monaragala</option>
+<option>Mullaitivu</option>
+<option>Nuwara Eliya</option>
+<option>Polonnaruwa</option>
+<option>Puttalam</option>
+<option>Ratnapura</option>
+<option>Trincomalee</option>
+<option>Vavuniya</option>
+
           </select>
           <div className="pointer-events-none absolute inset-y-0 right-0 flex items-center pr-3">
             <svg className="h-5 w-5 text-gray-400" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor">
@@ -250,10 +294,31 @@ useEffect(() => {
             onChange={handleFilterChange}
             className="block w-full h-12 pl-3 pr-8 border border-gray-300 rounded-lg text-base focus:ring-2 focus:ring-blue-500 focus:border-blue-500 appearance-none bg-white"
           >
-            <option>Any City</option>
-            <option>Colombo</option>
-            <option>Negombo</option>
-            <option>Kandy</option>
+           <option>Major Cities</option>
+<option>Colombo</option>
+<option>Negombo</option>
+<option>Kandy</option>
+<option>Galle</option>
+<option>Jaffna</option>
+<option>Trincomalee</option>
+<option>Anuradhapura</option>
+<option>Matara</option>
+<option>Ratnapura</option>
+<option>Kurunegala</option>
+<option>Badulla</option>
+<option>Nuwara Eliya</option>
+<option>Batticaloa</option>
+<option>Kalutara</option>
+<option>Hambantota</option>
+<option>Ampara</option>
+<option>Polonnaruwa</option>
+<option>Mannar</option>
+<option>Vavuniya</option>
+<option>Dambulla</option>
+<option>Matale</option>
+<option>Gampaha</option>
+<option>Moratuwa</option>
+<option>Kegalle</option>
           </select>
           <div className="pointer-events-none absolute inset-y-0 right-0 flex items-center pr-3">
             <svg className="h-5 w-5 text-gray-400" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor">
@@ -279,9 +344,31 @@ useEffect(() => {
             className="block w-full h-12 pl-3 pr-8 border border-gray-300 rounded-lg text-base focus:ring-2 focus:ring-green-500 focus:border-green-500 appearance-none bg-white"
           >
             <option>All Districts</option>
-            <option>Colombo</option>
-            <option>Gampaha</option>
-            <option>Kandy</option>
+<option>Ampara</option>
+<option>Anuradhapura</option>
+<option>Badulla</option>
+<option>Batticaloa</option>
+<option>Colombo</option>
+<option>Galle</option>
+<option>Gampaha</option>
+<option>Hambantota</option>
+<option>Jaffna</option>
+<option>Kalutara</option>
+<option>Kandy</option>
+<option>Kegalle</option>
+<option>Kilinochchi</option>
+<option>Kurunegala</option>
+<option>Mannar</option>
+<option>Matale</option>
+<option>Matara</option>
+<option>Monaragala</option>
+<option>Mullaitivu</option>
+<option>Nuwara Eliya</option>
+<option>Polonnaruwa</option>
+<option>Puttalam</option>
+<option>Ratnapura</option>
+<option>Trincomalee</option>
+<option>Vavuniya</option>
           </select>
           <div className="pointer-events-none absolute inset-y-0 right-0 flex items-center pr-3">
             <svg className="h-5 w-5 text-gray-400" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor">
@@ -296,10 +383,31 @@ useEffect(() => {
             onChange={handleFilterChange}
             className="block w-full h-12 pl-3 pr-8 border border-gray-300 rounded-lg text-base focus:ring-2 focus:ring-green-500 focus:border-green-500 appearance-none bg-white"
           >
-            <option>Any City</option>
-            <option>Colombo</option>
-            <option>Negombo</option>
-            <option>Kandy</option>
+            <option>Major Cities</option>
+<option>Colombo</option>
+<option>Negombo</option>
+<option>Kandy</option>
+<option>Galle</option>
+<option>Jaffna</option>
+<option>Trincomalee</option>
+<option>Anuradhapura</option>
+<option>Matara</option>
+<option>Ratnapura</option>
+<option>Kurunegala</option>
+<option>Badulla</option>
+<option>Nuwara Eliya</option>
+<option>Batticaloa</option>
+<option>Kalutara</option>
+<option>Hambantota</option>
+<option>Ampara</option>
+<option>Polonnaruwa</option>
+<option>Mannar</option>
+<option>Vavuniya</option>
+<option>Dambulla</option>
+<option>Matale</option>
+<option>Gampaha</option>
+<option>Moratuwa</option>
+<option>Kegalle</option>
           </select>
           <div className="pointer-events-none absolute inset-y-0 right-0 flex items-center pr-3">
             <svg className="h-5 w-5 text-gray-400" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor">
@@ -327,82 +435,86 @@ useEffect(() => {
 </div>
 
 {showDetailsModal && selectedTeacher && (
-  <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center p-4 z-50">
-    <div className="bg-white rounded-xl shadow-xl max-w-2xl w-full max-h-[90vh] overflow-y-auto">
+  <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 backdrop-blur-sm p-4">
+    <div className="bg-white rounded-2xl shadow-2xl max-w-2xl w-full max-h-[90vh] overflow-y-auto animate-fade-in">
       <div className="p-6">
-        <div className="flex justify-between items-start mb-4">
-          <h2 className="text-2xl font-bold text-gray-800">{selectedTeacher.name}</h2>
+        <div className="flex justify-between items-start border-b pb-4 mb-4">
+          <h2 className="text-3xl font-semibold text-gray-800">{selectedTeacher.name}</h2>
           <button 
             onClick={() => setShowDetailsModal(false)}
-            className="text-gray-500 hover:text-gray-700"
+            className="text-gray-400 hover:text-gray-600 transition"
           >
-            <IoMdClose size={24} />
+            <IoMdClose size={28} />
           </button>
         </div>
 
-        <div className="space-y-4">
- 
-          <div className="bg-gray-50 p-4 rounded-lg">
-            <h3 className="font-medium text-gray-700 mb-3">Professional Information</h3>
+        <div className="space-y-6">
+          {/* Professional Info */}
+          <div className="bg-gray-50 p-5 rounded-xl shadow-sm">
+            <h3 className="text-lg font-medium text-gray-700 mb-4">Professional Information</h3>
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
               <div>
-                <p className="text-sm text-gray-500">Position</p>
-                <p className="font-medium">{selectedTeacher.position || 'Not specified'}</p>
-              </div>
-             
-              <div>
-                <p className="text-sm text-gray-500">Subjects</p>
-                <div className="flex flex-wrap gap-1 mt-1">
-                  {selectedTeacher.subjects?.map((subject, index) => (
-                    <span key={index} className="bg-blue-100 text-blue-800 text-xs px-2 py-1 rounded">
-                      {subject}
-                    </span>
-                  )) || <span className="text-gray-500">Not specified</span>}
+                <p className="text-sm text-gray-500 mb-1">Subjects</p>
+                <div className="flex flex-wrap gap-2">
+                  {selectedTeacher.subjects?.length ? (
+                    selectedTeacher.subjects.map((subject, idx) => (
+                      <span key={idx} className="bg-blue-100 text-blue-800 text-xs px-3 py-1 rounded-full font-medium">
+                        {subject}
+                      </span>
+                    ))
+                  ) : (
+                    <span className="text-gray-400 text-sm">Not specified</span>
+                  )}
                 </div>
               </div>
+
               <div>
-                <p className="text-sm text-gray-500">Grades Teaching</p>
-                <div className="flex flex-wrap gap-1 mt-1">
-                  {selectedTeacher.grades?.map((grade, index) => (
-                    <span key={index} className="bg-purple-100 text-purple-800 text-xs px-2 py-1 rounded">
-                      {grade}
-                    </span>
-                  )) || <span className="text-gray-500">Not specified</span>}
+                <p className="text-sm text-gray-500 mb-1">Grades Teaching</p>
+                <div className="flex flex-wrap gap-2">
+                  {selectedTeacher.grades?.length ? (
+                    selectedTeacher.grades.map((grade, idx) => (
+                      <span key={idx} className="bg-purple-100 text-purple-800 text-xs px-3 py-1 rounded-full font-medium">
+                        {grade}
+                      </span>
+                    ))
+                  ) : (
+                    <span className="text-gray-400 text-sm">Not specified</span>
+                  )}
                 </div>
               </div>
+
               <div>
-                <p className="text-sm text-gray-500">Qualifications</p>
-                <div className="flex flex-wrap gap-1 mt-1">
-                  {selectedTeacher.qualifications?.map((qual, index) => (
-                    <span key={index} className="bg-green-100 text-green-800 text-xs px-2 py-1 rounded">
-                      {qual}
-                    </span>
-                  )) || <span className="text-gray-500">Not specified</span>}
-                </div>
-              </div>
-              <div>
-                <p className="text-sm text-gray-500">Posted Date</p>
-                <p className="font-medium">{selectedTeacher.postedDate}</p>
+                <p className="text-sm text-gray-500 mb-1">Posted Date</p>
+                <p className="font-medium text-gray-700">
+                  {new Date(selectedTeacher.createdAt).toISOString().slice(0, 10)}
+                </p>
               </div>
             </div>
           </div>
 
-          <div className="bg-blue-50 p-4 rounded-lg border border-blue-100">
+          {/* Current School */}
+          <div className="bg-blue-50 p-5 rounded-xl border border-blue-100 shadow-sm">
             <div className="flex items-center gap-2 mb-3">
               <FaSchool className="text-blue-500" />
-              <h3 className="font-medium text-blue-800">Current School</h3>
+              <h3 className="text-lg font-medium text-blue-800">Current School</h3>
             </div>
-            <p className="font-medium mb-1">{selectedTeacher.currentSchool}</p>
-            <p className="text-gray-600">{selectedTeacher.currentLocation}</p>
+            <div className="space-y-1 text-gray-700 text-sm">
+              <p><span className="text-gray-500">School: </span>{selectedTeacher.currentSchool}</p>
+              <p><span className="text-gray-500">District: </span>{selectedTeacher.currentDistrict}</p>
+              <p><span className="text-gray-500">City: </span>{selectedTeacher.currentCity}</p>
+            </div>
           </div>
 
-    
-          <div className="bg-green-50 p-4 rounded-lg border border-green-100">
+          {/* Preferred Location */}
+          <div className="bg-green-50 p-5 rounded-xl border border-green-100 shadow-sm">
             <div className="flex items-center gap-2 mb-3">
               <FaExchangeAlt className="text-green-500" />
-              <h3 className="font-medium text-green-800">Preferred Transfer Location</h3>
+              <h3 className="text-lg font-medium text-green-800">Preferred Transfer Location</h3>
             </div>
-            <p className="font-medium">{selectedTeacher.preferredLocation}</p>
+            <div className="space-y-1 text-gray-700 text-sm">
+              <p><span className="text-gray-500">District: </span>{selectedTeacher.preferredDistrict}</p>
+              <p><span className="text-gray-500">City: </span>{selectedTeacher.preferredCity}</p>
+            </div>
             {selectedTeacher.preferredReason && (
               <div className="mt-2">
                 <p className="text-sm text-gray-500">Reason for Transfer</p>
@@ -411,33 +523,31 @@ useEffect(() => {
             )}
           </div>
 
-        
-          <div className="bg-gray-50 p-4 rounded-lg">
-            <h3 className="font-medium text-gray-700 mb-3">Contact Information</h3>
+          {/* Contact Info */}
+          <div className="bg-gray-50 p-5 rounded-xl shadow-sm">
+            <h3 className="text-lg font-medium text-gray-700 mb-4">Contact Information</h3>
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-              <div>
-                <p className="text-sm text-gray-500">Phone</p>
-                <p className="font-medium">{selectedTeacher.phone}</p>
-              </div>
-           
+             
+              <div className="space-y-1 text-gray-700 text-sm">
+              <p><span className="text-gray-500">Phone: </span>{selectedTeacher.phone}</p>
+            </div>
               {selectedTeacher.additionalContact && (
-                <div className="col-span-2">
-                  <p className="text-sm text-gray-500">Additional Contact</p>
-                  <p className="font-medium">{selectedTeacher.additionalContact}</p>
-                </div>
+               
+                <div className="space-y-1 text-gray-700 text-sm">
+                <p><span className="text-gray-500">Additional Contact: </span>{selectedTeacher.additionalContact}</p>
+                             </div>
               )}
             </div>
-            <div className="flex gap-2 mt-4">
+            <div className="mt-5 flex gap-3">
               <button 
                 onClick={() => {
                   contactViaWhatsApp(selectedTeacher.phone, selectedTeacher.name);
                   setShowDetailsModal(false);
                 }}
-                className="flex-1 px-4 py-2 bg-green-600 text-white rounded-lg hover:bg-green-700 flex items-center justify-center gap-2"
+                className="flex items-center justify-center gap-2 px-5 py-2.5 bg-green-600 text-white rounded-lg hover:bg-green-700 transition w-full"
               >
-                <FaWhatsapp /> WhatsApp
+                <FaWhatsapp /> Contact via WhatsApp
               </button>
-          
             </div>
           </div>
         </div>
@@ -445,6 +555,7 @@ useEffect(() => {
     </div>
   </div>
 )}
+
 
         <div className="space-y-4">
           {filteredRequests.length > 0 ? (
@@ -459,13 +570,19 @@ useEffect(() => {
                      
                     </div>
                     <div className="flex items-center text-gray-500 text-sm mb-1">
-                      <FaChalkboardTeacher className="mr-2" />
-                      <span>{request.subject} Teacher</span>
-                    </div>
+  <FaChalkboardTeacher className="mr-2" />
+  <span>
+    {Array.isArray(request.subjects) && request.subjects.length > 0 
+      ? request.subjects.join(', ') + ' Teacher'
+      : 'Teacher'}
+  </span>
+</div>
                     <div className="flex items-center text-gray-500 text-sm">
                       <FaCalendarAlt className="mr-2" />
-                      <span>Posted: {request.postedDate}</span>
+                      <span>Posted:  {new Date(request.createdAt).toISOString().slice(0, 10)}
+                      </span>
                     </div>
+                  
                   </div>
                 </div>
                 
@@ -476,7 +593,7 @@ useEffect(() => {
                       <h4 className="font-medium">Current Location</h4>
                     </div>
                     <p className="text-gray-800 ml-6">{request.currentSchool}</p>
-                    <p className="text-gray-600 ml-6">{request.currentLocation}</p>
+                    <p className="text-gray-600 ml-6">{request.currentDistrict}</p>
                   </div>
                   
                   <div className="bg-gray-50 rounded-lg p-4">
@@ -484,7 +601,7 @@ useEffect(() => {
                       <FaExchangeAlt className="mr-2 text-green-500" />
                       <h4 className="font-medium">Preferred Location</h4>
                     </div>
-                    <p className="text-gray-800 ml-6">{request.preferredLocation}</p>
+                    <p className="text-gray-800 ml-6">{request.preferredDistrict}</p>
                   </div>
                 </div>
                 
