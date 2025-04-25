@@ -33,27 +33,37 @@ const handleCreateRequest = () => {
 useEffect(() => {
   const fetchTransferRequests = async () => {
     try {
-      const response = await axios.get('/api/transfer-requests');
-      console.log('API Response:', response); // Add this to see the actual response structure
+      // Use full API URL in production
+      const apiUrl = process.env.NODE_ENV === 'development' 
+        ? '/api/transfer-requests'
+        : 'https://swap-production-6d13.up.railway.app/api/transfer-requests';
       
-      // Ensure we're working with an array
-      const responseData = Array.isArray(response.data) 
-        ? response.data 
-        : response.data?.results || response.data?.items || [];
+      const response = await axios.get(apiUrl);
       
-      const requestsWithGuaranteedIds = responseData.map((request, index) => ({
-        ...request,
-        reactKey: request.id || request._id || `request-${index}-${Date.now()}`
+      // Check if response is HTML (wrong response)
+      if (typeof response.data === 'string' && response.data.includes('<!doctype html>')) {
+        throw new Error('API returned HTML instead of JSON');
+      }
+
+      const requestsArray = Array.isArray(response.data) ? response.data : [];
+      
+      const requestsWithIds = requestsArray.map((item, index) => ({
+        ...item,
+        reactKey: item.id || item._id || `request-${index}-${Date.now()}`
       }));
       
-      setTransferRequests(requestsWithGuaranteedIds);
+      setTransferRequests(requestsWithIds);
     } catch (err) {
-      console.error('Error fetching transfer requests:', err);
-      setTransferRequests([]); // Set to empty array on error
+      console.error('API Error:', err);
+      setTransferRequests([]);
+      // Show error to user
+      alert('Failed to load data. Please try again later.');
     }
   };
   fetchTransferRequests();
 }, []);
+
+
   const openTeacherDetails = (teacher) => {
     setSelectedTeacher(teacher);
     setShowDetailsModal(true);
