@@ -34,15 +34,18 @@ useEffect(() => {
   const fetchTransferRequests = async () => {
     try {
       const response = await axios.get('/api/transfer-requests');
-      setTransferRequests(response.data);
+      const requestsWithGuaranteedIds = response.data.map((request, index) => ({
+        ...request,
+        // Create a guaranteed unique ID if one doesn't exist
+        reactKey: request.id || request._id || `request-${index}-${Math.random().toString(36).slice(2, 9)}`
+      }));
+      setTransferRequests(requestsWithGuaranteedIds);
     } catch (err) {
       console.error('Error fetching transfer requests:', err);
     }
   };
-
   fetchTransferRequests();
 }, []);
-
 
   const openTeacherDetails = (teacher) => {
     setSelectedTeacher(teacher);
@@ -456,30 +459,28 @@ useEffect(() => {
               <div>
                 <p className="text-sm text-gray-500 mb-1">Subjects</p>
                 <div className="flex flex-wrap gap-2">
-                  {selectedTeacher.subjects?.length ? (
-                    selectedTeacher.subjects.map((subject, idx) => (
-                      <span key={idx} className="bg-blue-100 text-blue-800 text-xs px-3 py-1 rounded-full font-medium">
-                        {subject}
-                      </span>
-                    ))
-                  ) : (
-                    <span className="text-gray-400 text-sm">Not specified</span>
-                  )}
+                {selectedTeacher?.subjects?.map((subject, idx) => (
+  <span 
+    key={`${selectedTeacher.reactKey}-subject-${idx}-${subject}`}
+    className="bg-blue-100 text-blue-800 text-xs px-3 py-1 rounded-full font-medium"
+  >
+    {subject}
+  </span>
+))}
                 </div>
               </div>
 
               <div>
                 <p className="text-sm text-gray-500 mb-1">Grades Teaching</p>
                 <div className="flex flex-wrap gap-2">
-                  {selectedTeacher.grades?.length ? (
-                    selectedTeacher.grades.map((grade, idx) => (
-                      <span key={idx} className="bg-purple-100 text-purple-800 text-xs px-3 py-1 rounded-full font-medium">
-                        {grade}
-                      </span>
-                    ))
-                  ) : (
-                    <span className="text-gray-400 text-sm">Not specified</span>
-                  )}
+                {selectedTeacher?.grades?.map((grade, idx) => (
+  <span 
+    key={`${selectedTeacher.reactKey}-grade-${idx}-${grade}`}
+    className="bg-purple-100 text-purple-800 text-xs px-3 py-1 rounded-full font-medium"
+  >
+    {grade}
+  </span>
+))}
                 </div>
               </div>
 
@@ -560,9 +561,8 @@ useEffect(() => {
         <div className="space-y-4">
           {filteredRequests.length > 0 ? (
             filteredRequests.map(request => (
-              <div key={request.id} className={`bg-white rounded-xl shadow-sm p-6 hover:shadow-md transition-shadow border-l-4 ${
-                  request.status === 'completed' ? 'border-green-500' : 'border-yellow-500'
-                }`}>
+              <div key={request.reactKey} 
+              className="bg-white rounded-xl shadow-sm p-6 hover:shadow-md transition-shadow">
                 <div className="flex flex-col md:flex-row md:items-start md:justify-between gap-4 mb-4">
                   <div>
                     <div className="flex items-center gap-3 mb-2">

@@ -359,18 +359,21 @@ const TransferRequestForm = ({ onCloseForm }) => {
                 </div>
                 {renderError('subjects')}
                 <div className="flex flex-wrap gap-2">
-                  {formData.subjects.map((subject, index) => (
-                    <span key={index} className="bg-blue-100 text-blue-800 px-2 py-1 rounded-full text-sm flex items-center gap-1">
-                      {subject}
-                      <button
-                        type="button"
-                        onClick={() => handleRemoveItem('subjects', index)}
-                        className="text-blue-600 hover:text-blue-800"
-                      >
-                        <IoMdClose size={16} />
-                      </button>
-                    </span>
-                  ))}
+                {formData.subjects.map((subject, index) => (
+  <span 
+    key={`subject-${index}-${subject}`}  // Already improved in your code
+    className="bg-blue-100 text-blue-800 px-2 py-1 rounded-full text-sm flex items-center gap-1"
+  >
+    {subject}
+    <button
+      type="button"
+      onClick={() => handleRemoveItem('subjects', index)}
+      className="text-blue-600 hover:text-blue-800"
+    >
+      <IoMdClose size={16} />
+    </button>
+  </span>
+))}
                 </div>
               </div>
              
@@ -397,19 +400,21 @@ const TransferRequestForm = ({ onCloseForm }) => {
                   </button>
                 </div>
                 <div className="flex flex-wrap gap-2">
-                  {formData.grades.map((grade, index) => (
-                    <span key={index} className="bg-purple-100 text-purple-800 px-2 py-1 rounded-full text-sm flex items-center gap-1">
-                      {grade}
-                      <button
-                        type="button"
-                        onClick={() => handleRemoveItem('grades', index)}
-                        className="text-purple-600 hover:text-purple-800"
-                      >
-                        <IoMdClose size={16} />
-                      </button>
-                    </span>
-                  ))}
-                </div>
+                {formData.grades.map((grade, index) => (
+  <span 
+    key={`grade-${index}-${grade}`}  // Already improved in your code
+    className="bg-purple-100 text-purple-800 px-2 py-1 rounded-full text-sm flex items-center gap-1"
+  >
+    {grade}
+    <button
+      type="button"
+      onClick={() => handleRemoveItem('grades', index)}
+      className="text-purple-600 hover:text-purple-800"
+    >
+      <IoMdClose size={16} />
+    </button>
+  </span>
+))}         </div>
               </div>
             </div>
 
