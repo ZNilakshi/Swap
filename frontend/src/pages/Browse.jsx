@@ -34,15 +34,22 @@ useEffect(() => {
   const fetchTransferRequests = async () => {
     try {
       const response = await axios.get('/api/transfer-requests');
-      setTransferRequests(response.data);
+      
+      // Ensure the response data is an array
+      if (Array.isArray(response.data)) {
+        setTransferRequests(response.data);
+      } else {
+        console.error('API response is not an array:', response.data);
+        setTransferRequests([]); // Set to empty array if response isn't array
+      }
     } catch (err) {
       console.error('Error fetching transfer requests:', err);
+      setTransferRequests([]); // Set to empty array on error
     }
   };
 
   fetchTransferRequests();
 }, []);
-
 
   const openTeacherDetails = (teacher) => {
     setSelectedTeacher(teacher);
