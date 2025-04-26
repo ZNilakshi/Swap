@@ -96,7 +96,7 @@ const AboutUs = () => {
           </div>
         </div>
 
-        {/* Team Section */}
+        {/* Team 
         <div className="text-center">
           <h2 className="text-3xl font-bold text-[#0078AA] mb-4">
             Meet The Team
@@ -132,6 +132,7 @@ const AboutUs = () => {
             ))}
           </div>
         </div>
+Section */}
       </div>
     </div>
   );
