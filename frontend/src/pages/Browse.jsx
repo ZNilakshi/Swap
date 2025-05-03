@@ -72,11 +72,17 @@ useEffect(() => {
     // Safely access properties with fallback values
     const name = request.name || '';
     const subjects = Array.isArray(request.subjects) ? request.subjects : [];
-    const currentLocation = request.currentLocation || '';
-    const preferredLocation = request.preferredLocation || '';
+    const currentDistrict = request.currentDistrict || '';
+    const currentCity = request.currentCity || '';
+    const preferredDistrict = request.preferredDistrict || '';
+    const preferredCity = request.preferredCity || '';
   
-    // Convert search query to lowercase once
+    // Convert all to lowercase for case-insensitive comparison
     const searchLower = searchQuery.toLowerCase();
+    const currentDistrictLower = currentDistrict.toLowerCase();
+    const currentCityLower = currentCity.toLowerCase();
+    const preferredDistrictLower = preferredDistrict.toLowerCase();
+    const preferredCityLower = preferredCity.toLowerCase();
   
     // Filter by search query
     if (searchQuery) {
@@ -84,8 +90,12 @@ useEffect(() => {
       const subjectsMatch = subjects.some(subj => 
         subj.toLowerCase().includes(searchLower)
       );
-      const currentLocationMatch = currentLocation.toLowerCase().includes(searchLower);
-      const preferredLocationMatch = preferredLocation.toLowerCase().includes(searchLower);
+      const currentLocationMatch = 
+        currentDistrictLower.includes(searchLower) || 
+        currentCityLower.includes(searchLower);
+      const preferredLocationMatch = 
+        preferredDistrictLower.includes(searchLower) || 
+        preferredCityLower.includes(searchLower);
   
       if (!nameMatch && !subjectsMatch && !currentLocationMatch && !preferredLocationMatch) {
         return false;
@@ -93,29 +103,30 @@ useEffect(() => {
     }
   
     // Filter by subject
-    if (filters.subject !== 'All Subjects' && !subjects.includes(filters.subject)) {
+    if (filters.subject !== 'All Subjects' && 
+        !subjects.some(subj => subj.toLowerCase() === filters.subject.toLowerCase())) {
       return false;
     }
   
     // Filter by current location
     if (filters.currentDistrict !== 'All Districts' && 
-        !currentLocation.includes(filters.currentDistrict)) {
+        filters.currentDistrict.toLowerCase() !== currentDistrictLower) {
       return false;
     }
     
     if (filters.currentCity !== 'Any City' && 
-        !currentLocation.includes(filters.currentCity)) {
+        filters.currentCity.toLowerCase() !== currentCityLower) {
       return false;
     }
   
     // Filter by preferred location
     if (filters.preferredDistrict !== 'All Districts' && 
-        !preferredLocation.includes(filters.preferredDistrict)) {
+        filters.preferredDistrict.toLowerCase() !== preferredDistrictLower) {
       return false;
     }
     
     if (filters.preferredCity !== 'Any City' && 
-        !preferredLocation.includes(filters.preferredCity)) {
+        filters.preferredCity.toLowerCase() !== preferredCityLower) {
       return false;
     }
   
