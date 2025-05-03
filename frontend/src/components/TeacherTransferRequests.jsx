@@ -222,6 +222,7 @@ const TransferRequestForm = ({ onCloseForm }) => {
                       value={formData.phone}
                       onChange={handleInputChange}
                       className={`w-full px-3 py-2 border ${errors.phone ? 'border-red-500' : 'border-gray-300'} rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500`}
+                      placeholder="0712345678"
                       required
                     />
                   </div>
