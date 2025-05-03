@@ -46,6 +46,7 @@ const TransferRequestForm = ({ onCloseForm }) => {
     if (!formData.currentCity.trim()) newErrors.currentCity = 'Current city is required';
    
     if (formData.subjects.length === 0) newErrors.subjects = 'At least one subject is required';
+    if (formData.grades.length === 0) newErrors.grades = 'At least one grade is required';
     if (!formData.preferredDistrict) newErrors.preferredDistrict = 'Preferred district is required';
     if (!formData.preferredCity.trim()) newErrors.preferredCity = 'Preferred city is required';
     
@@ -379,43 +380,45 @@ const TransferRequestForm = ({ onCloseForm }) => {
              
               
               <div className="mb-4">
-                <label htmlFor="grades" className="block text-sm font-medium text-gray-700 mb-1">
-                  Grades You Teach
-                </label>
-                <div className="flex gap-2 mb-2">
-                  <input
-                    type="text"
-                    id="grades"
-                    value={currentGrade}
-                    onChange={(e) => setCurrentGrade(e.target.value)}
-                    className="flex-1 px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
-                    placeholder="e.g. Grade 10"
-                  />
-                  <button
-                    type="button"
-                    onClick={() => handleArrayAdd('grades', currentGrade, setCurrentGrade)}
-                    className="px-3 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700"
-                  >
-                    Add
-                  </button>
-                </div>
-                <div className="flex flex-wrap gap-2">
-                {formData.grades.map((grade, index) => (
-  <span 
-    key={`grade-${index}-${grade}`}  // Already improved in your code
-    className="bg-purple-100 text-purple-800 px-2 py-1 rounded-full text-sm flex items-center gap-1"
-  >
-    {grade}
+  <label htmlFor="grades" className="block text-sm font-medium text-gray-700 mb-1">
+    Grades You Teach
+  </label>
+  <div className="flex gap-2 mb-2">
+    <input
+      type="text"
+      id="grades"
+      value={currentGrade}
+      onChange={(e) => setCurrentGrade(e.target.value)}
+      className={`flex-1 px-3 py-2 border ${errors.grades ? 'border-red-500' : 'border-gray-300'} rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500`}
+      placeholder="e.g. Grade 10"
+    />
     <button
       type="button"
-      onClick={() => handleRemoveItem('grades', index)}
-      className="text-purple-600 hover:text-purple-800"
+      onClick={() => handleArrayAdd('grades', currentGrade, setCurrentGrade)}
+      className="px-3 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700"
     >
-      <IoMdClose size={16} />
+      Add
     </button>
-  </span>
-))}         </div>
-              </div>
+  </div>
+  {renderError('grades')} {/* Show error if grades are empty */}
+  <div className="flex flex-wrap gap-2">
+    {formData.grades.map((grade, index) => (
+      <span 
+        key={`grade-${index}-${grade}`}
+        className="bg-purple-100 text-purple-800 px-2 py-1 rounded-full text-sm flex items-center gap-1"
+      >
+        {grade}
+        <button
+          type="button"
+          onClick={() => handleRemoveItem('grades', index)}
+          className="text-purple-600 hover:text-purple-800"
+        >
+          <IoMdClose size={16} />
+        </button>
+      </span>
+    ))}
+  </div>
+</div>
             </div>
 
             <div className="bg-green-50 p-4 rounded-lg border border-green-100 mb-6">

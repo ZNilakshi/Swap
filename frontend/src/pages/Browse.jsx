@@ -119,7 +119,8 @@ useEffect(() => {
       return false;
     }
   
-    // Filter by preferred location
+    // Filter by 
+    //  location
     if (filters.preferredDistrict !== 'All Districts' && 
         filters.preferredDistrict.toLowerCase() !== preferredDistrictLower) {
       return false;
@@ -319,6 +320,7 @@ useEffect(() => {
             </svg>
           </div>
         </div>
+       {/* 
         <div className="relative">
           <select
             name="currentCity"
@@ -358,6 +360,7 @@ useEffect(() => {
             </svg>
           </div>
         </div>
+        */}
       </div>
     </div>
 
@@ -408,6 +411,7 @@ useEffect(() => {
             </svg>
           </div>
         </div>
+        {/*  
         <div className="relative">
           <select
             name="preferredCity"
@@ -447,6 +451,7 @@ useEffect(() => {
             </svg>
           </div>
         </div>
+        */}
       </div>
     </div>
   </div>
