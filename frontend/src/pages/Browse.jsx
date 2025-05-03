@@ -222,7 +222,7 @@ useEffect(() => {
           onChange={handleFilterChange}
           className="block w-full h-12 pl-3 pr-8 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 text-base appearance-none bg-white"
         >
-         <option>Subjects</option>
+         <option>Subjects </option>
 <option>Mathematics</option>
 <option>Science</option>
 <option>English</option>
