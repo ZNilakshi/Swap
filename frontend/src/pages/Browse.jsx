@@ -185,7 +185,7 @@ useEffect(() => {
 
   <div className="flex flex-col md:flex-row gap-5 mb-5">
 
- {/* Professional Info 
+
     <div className="flex-1">
       <label htmlFor="search" className="block text-sm font-medium text-gray-700 mb-2">Search</label>
       <div className="relative">
@@ -211,7 +211,7 @@ useEffect(() => {
       </div>
     </div>
 
-  */}
+  
     <div className="flex-1">
       <label htmlFor="subject" className="block text-sm font-medium text-gray-700 mb-2">Subject</label>
       <div className="relative">
