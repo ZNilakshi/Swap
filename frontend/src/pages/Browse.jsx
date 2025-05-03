@@ -223,7 +223,7 @@ useEffect(() => {
       </div>
     </div>
 
-  
+  {/*
     <div className="flex-1">
       <label htmlFor="subject" className="block text-sm font-medium text-gray-700 mb-2">Subject</label>
       <div className="relative">
@@ -268,6 +268,7 @@ useEffect(() => {
         </div>
       </div>
     </div>
+     */}
   </div>
 
  
